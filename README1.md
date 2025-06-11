@@ -64,7 +64,7 @@ wsl --install                 # Para nova instalação
 wsl --update                  # Para atualizar
 wsl --set-default-version 2   # Definir WSL 2 como padrão
 wsl --install -d Ubuntu       # Instalar Ubuntu (se não tiver)
-
+```
 Docker Desktop
 O Docker Desktop é fundamental para fornecer o ambiente Docker e o cluster Kubernetes local.
 
@@ -96,120 +96,122 @@ Clique em Apply & Restart. Isso pode levar alguns minutos para baixar e configur
 
 Java (JDK 17)
 Para instalar o Java JDK 17, execute os seguintes comandos no seu terminal WSL:
-
+```
 sudo apt update
 sudo apt install openjdk-17-jdk -y
-
+```
 Configurar JAVA_HOME (Recomendado):
 Descubra o caminho de instalação do JDK:
-
+```
 sudo update-alternatives --config java
-
+```
 Anote o caminho (ex: /usr/lib/jvm/java-17-openjdk-amd64).
 
 Edite o arquivo ~/.bashrc:
-
+```
 nano ~/.bashrc
-
+```
 Adicione as seguintes linhas no final do arquivo (substitua o caminho):
 
 # Configuração JAVA_HOME
+```
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk-amd64" # Substitua pelo seu caminho real
 export PATH=$JAVA_HOME/bin:$PATH
-
+```
 Salve e feche. Recarregue o .bashrc:
-
+```
 source ~/.bashrc
-
+```
 Verifique:
-
+```
 echo $JAVA_HOME
 java -version
-
+```
 Jenkins
 Para instalar o Jenkins, siga os passos abaixo no seu terminal WSL:
 
 Adicione a chave do Jenkins ao seu sistema:
-
+```
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
   [https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key](https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key)
-
+```
 Adicione o repositório do Jenkins à lista de fontes do apt:
-
+```
 echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] [https://pkg.jenkins.io/debian-stable](https://pkg.jenkins.io/debian-stable) binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null
-
+```
 Atualize a lista de pacotes e instale o Jenkins:
-
+```
 sudo apt-get update
 sudo apt-get install -y jenkins
-
+```
 Iniciar e Acessar Jenkins:
 
 Inicie o serviço Jenkins:
-
+```
 sudo systemctl start jenkins
-
+```
 Verifique o status:
-
+```
 sudo systemctl status jenkins
-
+```
 Acesse o Jenkins no seu navegador: http://localhost:8080
 
 Chave de Segurança Inicial:
 Para obter a senha inicial de administrador do Jenkins:
-
+```
 sudo cat /var/lib/jenkins/secrets/initialAdminPassword
-
+```
 Siga as instruções na interface web para concluir a instalação (instale os plugins sugeridos).
 
 Configurar Permissões Docker para Jenkins:
 Adicione o usuário jenkins ao grupo docker para que ele possa interagir com o daemon Docker sem sudo:
-
+```
 sudo usermod -aG docker jenkins
-
+```
 Reinicie os serviços para aplicar as permissões:
-
+```
 sudo systemctl restart docker
 sudo systemctl restart jenkins
-
+```
 Você também pode precisar reiniciar o Docker Desktop no Windows para garantir que o socket seja resetado.
 
-Kubectl
+##Kubectl
+
 Para instalar o kubectl (ferramenta de linha de comando do Kubernetes), siga os passos abaixo no seu terminal WSL:
 
 Atualize a lista de pacotes e instale os pré-requisitos:
-
+```
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
-
+```
 Adicione a chave GPG do Kubernetes:
-
+```
 curl -fsSL [https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key](https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key) | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-
+```
 Adicione o repositório do Kubernetes:
-
+```
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] [https://pkgs.k8s.io/core:/stable:/v1.30/deb/](https://pkgs.k8s.io/core:/stable:/v1.30/deb/) /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
-
+```
 Atualize a lista de pacotes e instale o kubectl:
-
+```
 sudo apt-get update
 sudo apt-get install -y kubectl
-
+```
 Verifique a instalação:
-
+```
 kubectl version --client
-
+```
 Observação: O Kubernetes do Docker Desktop já configura o kubectl para usar seu cluster automaticamente.
 
-ngrok
+##ngrok
 O ngrok cria um túnel seguro do seu localhost para a internet, permitindo que serviços externos (como o GitHub Webhook) acessem seu Jenkins local.
 
 Instalar ngrok:
-
+```
 sudo snap install ngrok
-
+```
 Conectar ngrok à sua conta:
 
 Crie uma conta gratuita no ngrok.com.
@@ -219,9 +221,9 @@ Faça login e vá para https://dashboard.ngrok.com/get-started/your-authtoken.
 Copie o comando ngrok config add-authtoken <SEU_AUTHTOKEN_AQUI>.
 
 Cole e execute este comando no seu terminal WSL.
-
+```
 ngrok config add-authtoken <SEU_AUTHTOKEN_AQUI>
-
+```
 4. Fases do Projeto
 Fase 1: Preparação do Projeto
 Objetivo: Criar a estrutura inicial e garantir o ambiente pronto para o desenvolvimento.
@@ -233,10 +235,10 @@ Criar um repositório de código no GitHub:
 Crie um novo repositório público no GitHub (ex: fastapi-kubernetes-cicd).
 
 Clone este repositório para sua máquina local (preferencialmente dentro do seu ambiente WSL).
-
+```
 git clone [https://github.com/SEU_USUARIO/fastapi-kubernetes-cicd.git](https://github.com/SEU_USUARIO/fastapi-kubernetes-cicd.git)
 cd fastapi-kubernetes-cicd
-
+```
 Copie o código base da aplicação (main.py, requirements.txt) para dentro da pasta backend/ do seu repositório clonado.
 
 Ajustar main.py para incluir Health/Readiness:
@@ -245,8 +247,9 @@ Adicione os endpoints /health e /ready ao seu backend/main.py.
 
 # backend/main.py (adição dos endpoints de saúde/prontidão)
 # ... (seu código FastAPI existente) ...
-
+```
 import os # Adicionado para os.uname().nodename
+
 from fastapi import Response # Adicionado para usar Response
 
 # Endpoint de Saúde (Health Check)
@@ -272,32 +275,32 @@ async def readiness_check(response: Response):
         return {"status": "NOT READY", "hostname": os.uname().nodename}
 
 # ... (restante do seu código FastAPI) ...
-
+```
 Faça o primeiro commit e push:
-
+```
 git add .
 git commit -m "Fase 1: Preparacao do projeto - Codigo base, repo GitHub, e endpoints de saude."
 git push origin main # Ou master
-
+```
 Criar conta no Docker Hub.
-
+```
 Acesse https://hub.docker.com/ e crie uma conta gratuita, se ainda não tiver. Anote seu nome de usuário.
-
+```
 Verificar acesso ao cluster Kubernetes local:
 
 Certifique-se de que o Docker Desktop está instalado e rodando no Windows e que o Kubernetes está habilitado nas configurações.
 
 No terminal WSL, verifique o status do cluster:
-
+```
 kubectl cluster-info
 kubectl get nodes
-
+```
 Você deve ver o nó docker-desktop com status Ready.
 
 Validar execução local com uvicorn:
-
+```
 Instale o Python e pip no seu WSL: sudo apt install python3 python3-pip python3.12-venv -y
-
+```
 Navegue até o diretório da aplicação: cd fastapi-kubernetes-cicd/backend/
 
 Crie e ative o ambiente virtual: python3 -m venv venv && source venv/bin/activate
@@ -320,6 +323,7 @@ Criar o Dockerfile:
 Na pasta backend/ do seu repositório, crie um arquivo chamado Dockerfile.
 
 # backend/Dockerfile
+```
 FROM python:3.9-slim-buster
 WORKDIR /app
 COPY requirements.txt .
@@ -327,12 +331,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
+```
+![Verificação no Kubernetes](img-projeto/localhost_3001.png)
 
 Criar docker-compose.yaml (Opcional para teste local):
 
 Na raiz do seu repositório, crie um arquivo chamado docker-compose.yaml.
 
 # docker-compose.yaml
+```
 services:
   fastapi-app:
     build:
@@ -343,13 +350,13 @@ services:
     volumes:
       - ./backend:/app # Mapeia o código local para dentro do contêiner (útil para desenvolvimento)
     restart: always
-
+```
 Fazer Build localmente (para teste):
 
 No terminal WSL, na raiz do seu repositório:
-
+```
 docker build -t seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-jenkins:latest -f backend/Dockerfile backend/
-
+```
 Verificação: docker images
 
 Fazer Push localmente (para teste):
@@ -360,23 +367,24 @@ Faça o push: docker push seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-je
 
 Verificação: Acesse seu Docker Hub no navegador.
 
-Imagem: 
 
-Imagem: !
-
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 
 
+```
 docker-docs.uclv.cu
-(img-projeto/Docker-Hub imagem criada e pipeline.png)
+```
+![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
+
 
 Versionar o Dockerfile e docker-compose.yaml no GitHub:
 
 No terminal WSL, na raiz do seu repositório:
-
+```
 git add .
 git commit -m "Fase 2: Conteinerizacao - Adicionar Dockerfile, docker-compose.yaml e testar build/push local."
 git push origin main
-
+```
 Imagem: 
 
 Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml versionados no GitHub.
@@ -393,6 +401,7 @@ Na raiz do seu repositório, crie uma pasta k8s.
 Dentro de k8s, crie o arquivo app-deploy.yaml.
 
 # k8s/app-deploy.yaml
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -427,23 +436,24 @@ spec:
     targetPort: 8000
     nodePort: 30001
   type: NodePort
-
+```
 Aplicar os YAMLs no cluster local (manualmente para teste):
 
 No terminal WSL, na raiz do seu repositório:
-
+```
 sed -i 's|{{tag}}|latest|g' k8s/app-deploy.yaml # Substitui {{tag}} por latest para teste
 kubectl apply -f k8s/app-deploy.yaml
-
+```
 Validar a execução da aplicação a partir do Kubernetes:
-
+```
   kubectl get deployments fastapi-app-deployment
   kubectl get pods -l app=fastapi-app
   kubectl get services fastapi-service
-
+```
 Acesse no navegador: http://localhost:30001/docs (e /health, /color, etc.).
 
-Imagem: 
+
+![Verificação no Kubernetes](img-projeto/localhost_3001.png)
 
 Entregáveis: Aplicativo exposto em localhost:30001 via NodePort ou rodando via port-forward. O aplicativo precisa estar funcionando a partir do Kubernetes.
 
@@ -455,7 +465,7 @@ Atividades:
 Criar/Atualizar o Jenkinsfile:
 
 Na raiz do seu repositório, crie/edite o arquivo Jenkinsfile.
-
+```
 // Jenkinsfile
 pipeline {
     agent any
@@ -522,7 +532,7 @@ pipeline {
         }
     }
 }
-
+```
 Configurar Job no Jenkins:
 
 Crie um novo job do tipo "Pipeline" (ex: fastapi-kubernetes-cicd-pipeline).
@@ -541,11 +551,8 @@ No Jenkins, clique em "Build Now".
 
 Verifique o console para garantir que "Build Docker Image" e "Push Docker Image" são concluídos com SUCESSO.
 
-Imagem: 
-
-Imagem: 
-
-Imagem: 
+![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png) 
+![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)  
 
 Entregáveis: Pipeline funcional no Jenkins até o push da imagem.
 
@@ -557,7 +564,7 @@ Atividades:
 Revisar e Adicionar o Estágio de Deploy no Jenkinsfile:
 
 Edite seu Jenkinsfile para descomentar (ou adicionar) o estágio stage('Deploy no Kubernetes').
-
+```
 // Jenkinsfile (APENAS O TRECHO DOS ESTÁGIOS E POST)
 // ...
         stage('Push Docker Image') { /* ... */ }
@@ -583,7 +590,7 @@ Edite seu Jenkinsfile para descomentar (ou adicionar) o estágio stage('Deploy n
         }
     }
 }
-
+```
 Configurar Credenciais Kubernetes (Kubeconfig) no Jenkins:
 
 Obtenha seu kubeconfig (geralmente ~/.kube/config).
@@ -606,7 +613,7 @@ Entregáveis: Pipeline completo com deploy automatizado.
 
 5. Estrutura do Projeto
 A estrutura do seu repositório deve ser a seguinte:
-
+```
 fastapi-kubernetes-cicd/
 ├── Jenkinsfile
 ├── docker-compose.yaml
@@ -620,7 +627,7 @@ fastapi-kubernetes-cicd/
 │   └── venv/ (opcional, ambiente virtual)
 ├── README.md
 └── .gitignore
-
+```
 6. Execução e Verificação
 Testando a Automação
 Certifique-se de que o ngrok está rodando e o webhook no GitHub está configurado com a URL correta do ngrok (verifique as "Recent Deliveries" no GitHub Webhooks para 200 OK).
@@ -635,15 +642,16 @@ Verificando a Aplicação no Kubernetes
 Após o pipeline do Jenkins ser concluído com SUCESSO, verifique a implantação:
 
 Verificar recursos do Kubernetes:
-
+```
 kubectl get deployments fastapi-app-deployment
 kubectl get pods -l app=fastapi-app
 kubectl get services fastapi-service
-
+```
 Confirme que o Deployment está READY, os Pods estão Running e Ready.
 
 Acessar a aplicação:
 Abra seu navegador web e acesse:
+```
 http://localhost:30001
 
 Você também pode acessar os endpoints da API:
@@ -657,7 +665,7 @@ http://localhost:30001/docs
 http://localhost:30001/color
 
 http://localhost:30001/cat
-
+```
 7. Desafios Extras
 Para aprimorar ainda mais o projeto, considere os seguintes desafios:
 
