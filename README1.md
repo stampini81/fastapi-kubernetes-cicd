@@ -54,10 +54,10 @@ Tudo isso é disparado automaticamente por eventos de `git push` via GitHub Webh
 
 Todos os comandos a seguir devem ser executados no terminal da sua distribuição Linux no WSL (ex: Ubuntu), a menos que especificado.
 
-### Configuração Inicial do WSL
+### Configuração Inicial do WSL 
 
-Certifique-se de que o WSL 2 está instalado e é a versão padrão.
-Abra o PowerShell como administrador e execute:
+ Certifique-se de que o WSL 2 está instalado e é a versão padrão.
+ Abra o PowerShell como administrador e execute:
 
 ```bash
 wsl --install                 # Para nova instalação
