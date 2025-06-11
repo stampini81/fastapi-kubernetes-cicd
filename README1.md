@@ -224,6 +224,7 @@ spec:
   type: NodePort
 ```
 
+
 ```bash
 sed -i 's|{{tag}}|latest|g' k8s/app-deploy.yaml
 kubectl apply -f k8s/app-deploy.yaml
@@ -317,6 +318,18 @@ Acesse:
 - http://localhost:30001/docs
 
 ---
+### Exemplos de imagens do pipeline:
+
+![Imagem Docker Hub](img-projeto/docker_hub_img.png)  
+![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png)  
+![Verificação no Kubernetes](img-projeto/localhost_3001.png)
+![Imagem Docker Hub](img-projeto/Docker-Hub imagem criada e pipeline.png)  
+![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)  
+![Verificação no Kubernetes](img-projeto/Pipeline_Jenkinsfile.png)
+![Imagem Docker Hub](img-projeto/docker-hub-imagem-criada.png)  
+![Pipeline no Jenkins](img-projeto/pipeline-jenkins.png)  
+![Verificação no Kubernetes](img-projeto/kubernetes-servicos.png)
+
 
 ## 7. Desafios Extras
 
