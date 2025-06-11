@@ -227,7 +227,7 @@ ngrok config add-authtoken <SEU_AUTHTOKEN_AQUI>
 ```
 ## 4. Fases do Projeto
 
-Fase 1: Preparação do Projeto
+# Fase 1: Preparação do Projeto
 Objetivo: Criar a estrutura inicial e garantir o ambiente pronto para o desenvolvimento.
 
 Atividades:
@@ -317,7 +317,7 @@ Acesse http://localhost:8000/docs (e /health, /ready) no navegador para validar.
 
 Entregáveis: Código rodando localmente, repositório do GitHub criado e ambiente preparado.
 
-Fase 2: Conteinerização com Docker
+# Fase 2: Conteinerização com Docker
 Objetivo: Empacotar a aplicação em um contêiner Docker e publicá-la no Docker Hub.
 
 Atividades:
@@ -393,7 +393,7 @@ Imagem:
 
 Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml versionados no GitHub.
 
-Fase 3: Arquivos de Deploy no Kubernetes
+# Fase 3: Arquivos de Deploy no Kubernetes
 Objetivo: Criar e aplicar manualmente os arquivos YAML para o Deployment e Service da aplicação FastAPI no Kubernetes local.
 
 Atividades:
@@ -461,7 +461,7 @@ Acesse no navegador: http://localhost:30001/docs (e /health, /color, etc.).
 
 Entregáveis: Aplicativo exposto em localhost:30001 via NodePort ou rodando via port-forward. O aplicativo precisa estar funcionando a partir do Kubernetes.
 
-Fase 4: Jenkins - Build e Push
+# Fase 4: Jenkins - Build e Push
 Objetivo: Criar um Pipeline no Jenkins que automatize o build e o push da imagem Docker.
 
 Atividades:
@@ -615,7 +615,7 @@ Monitore o Jenkins para ver o build disparar automaticamente e verificar se todo
 
 Entregáveis: Pipeline completo com deploy automatizado.
 
-5. Estrutura do Projeto
+# 5. Estrutura do Projeto
 A estrutura do seu repositório deve ser a seguinte:
 ```
 fastapi-kubernetes-cicd/
