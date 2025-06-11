@@ -1,0 +1,35 @@
+# k8s/app-deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-app-deployment # Nome do Deployment
+  labels:
+    app: fastapi-app
+spec:
+  replicas: 2 # Número de instâncias da sua aplicação
+  selector:
+    matchLabels:
+      app: fastapi-app
+  template:
+    metadata:
+      labels:
+        app: fastapi-app
+    spec:
+      containers:
+      - name: fastapi-container # Nome do contêiner dentro do Pod
+        image: leandro282/projeto-kubernetes-pb-desafio-jenkins:latest # <--- Placeholder para a tag da imagem
+        ports:
+        - containerPort: 8000 # Porta que seu FastAPI expõe (Uvicorn padrão)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-service # Nome do Service
+spec:
+  selector:
+    app: fastapi-app
+  ports:
+  - port: 80 # Porta do Service (interna ao cluster)
+    targetPort: 8000 # Porta do contêiner (onde a aplicação roda)
+    nodePort: 30001 # <--- Porta externa no nó (geralmente entre 30000-32767)
+  type: NodePort # Tipo de Service para expor externamente
