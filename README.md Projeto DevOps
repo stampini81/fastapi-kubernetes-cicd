@@ -1,23 +1,4 @@
-Fantástico\! Com as imagens que você compartilhou, podemos confirmar visualmente o sucesso de várias etapas, inclusive a **Fase 5**.
 
-Vamos analisar as evidências nas imagens:
-
-1.  **`push_automatizado.png`**: Mostra você fazendo um commit (`push2`) com alterações no `backend/main.py`. [cite\_start]Isso é o disparo da automação[cite: 6].
-2.  **`push_automatizado1.png`**: Mostra o Jenkins job `fastapi-kubernetes-cicd-pipeline` sendo disparado automaticamente (Build \#3 está em andamento/falhou, e Builds \#1 e \#2 já ocorreram). [cite\_start]O `ngrok` parece ter funcionado para entregar o webhook[cite: 7].
-3.  **`Pipeline_chuck_norris.png`**: Mostra o job `fastapi-kubernetes-cicd-pipeline` no Jenkins. [cite\_start]É possível ver a imagem do Chuck Norris e a lista de builds recentes, incluindo `Última construção completada (Build #2), 2 min 24 seg atrás`[cite: 5]. [cite\_start]Isso sugere que pelo menos um build completo (incluindo o estágio Chuck Norris) foi bem-sucedido[cite: 5].
-4.  [cite\_start]**`localhost_3001.png`**: Mostra a documentação do FastAPI acessível em `localhost:30001/docs` com todos os endpoints listados[cite: 3]. [cite\_start]Isso confirma que a aplicação foi implantada com sucesso no Kubernetes e está acessível externamente via NodePort[cite: 3].
-5.  [cite\_start]**`docker_hub_img.png`**: Mostra o repositório `leandro282/projeto-kubernetes-pb-desafio-jenkins` no Docker Hub, com a tag `latest` sendo atualizada "menos de um minuto" atrás[cite: 1]. [cite\_start]Isso valida o push da imagem para o Docker Hub[cite: 1].
-6.  [cite\_start]**`Docker-Hub imagem criada e pipeline.png`**: Confirma o repositório `leandro282/projeto-kubernetes-pb-desafio-jenkins` no Docker Hub, mostrando as tags `2` e `mais recente` (latest) criadas recentemente[cite: 2].
-
-**Conclusão sobre a Fase 5:**
-
-[cite\_start]Sim, com base nessas evidências, a **Fase 5: Jenkins - Deploy no Kubernetes** está **concluída e validada com sucesso\!** [cite: 3, 5] O pipeline completo está funcionando, desde o push no Git, passando pelo build e push da imagem no Docker Hub, até o deploy automatizado no Kubernetes e o acesso à aplicação.
-
------
-
-Agora, vamos para a **Fase 6: Documentação** e a inclusão dos Desafios Extras.
-
------
 
 # Projeto DevOps: Deploy Automatizado de API com FastAPI, Jenkins e Kubernetes
 
