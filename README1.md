@@ -246,8 +246,10 @@ Ajustar main.py para incluir Health/Readiness:
 
 Adicione os endpoints /health e /ready ao seu backend/main.py.
 
-# backend/main.py (adição dos endpoints de saúde/prontidão)
-# ... (seu código FastAPI existente) ...
+ backend/main.py (adição dos endpoints de saúde/prontidão)
+ ```
+ ... (seu código FastAPI existente) ...
+ ```
 ```
 import os # Adicionado para os.uname().nodename
 
