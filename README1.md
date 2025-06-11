@@ -326,8 +326,8 @@ Acesse:
 ![Imagem Docker Hub](img-projeto/Docker-Hub imagem criada e pipeline.png)  
 ![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)  
 ![Verificação no Kubernetes](img-projeto/Pipeline_Jenkinsfile.png)
-![Imagem Docker Hub](img-projeto/docker-hub-imagem-criada.png)  
-![Pipeline no Jenkins](img-projeto/pipeline-jenkins.png)  
+![Imagem Docker Hub](img-projeto/push_automatizado.png)  
+![Pipeline no Jenkins](img-projeto/push_automatizado1.png)  
 ![Verificação no Kubernetes](img-projeto/kubernetes-servicos.png)
 
 
