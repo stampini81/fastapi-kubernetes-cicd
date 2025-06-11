@@ -15,7 +15,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1️⃣ Endpoint que retorna uma cor aleatória para mudar a cor da página.
+# 1️⃣ Endpoint que retorna uma cor aleatória para mudar a cor da página...
 @app.get("/color")
 async def get_random_color():
     colors = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF3"]
