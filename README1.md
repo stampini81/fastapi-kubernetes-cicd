@@ -65,7 +65,7 @@ wsl --update                  # Para atualizar
 wsl --set-default-version 2   # Definir WSL 2 como padrão
 wsl --install -d Ubuntu       # Instalar Ubuntu (se não tiver)
 ```
-Docker Desktop
+###Docker Desktop
 O Docker Desktop é fundamental para fornecer o ambiente Docker e o cluster Kubernetes local.
 
 Baixar e Instalar o Docker Desktop:
@@ -127,7 +127,7 @@ Verifique:
 echo $JAVA_HOME
 java -version
 ```
-Jenkins
+###Jenkins
 Para instalar o Jenkins, siga os passos abaixo no seu terminal WSL:
 
 Adicione a chave do Jenkins ao seu sistema:
