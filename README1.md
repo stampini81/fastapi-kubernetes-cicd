@@ -8,7 +8,7 @@ Este projeto tem como objetivo ensinar na prática os conceitos de CI/CD utiliza
 
 ## Sumário
 
-1.  [Visão Geral](https://www.google.com/search?q=%231-vis%C3%A3o-geral)
+1.  [Visão Geral](1\. Visão Geral)
 2.  [Pré-requisitos](https://www.google.com/search?q=%232-pr%C3%A9-requisitos)
 3.  [Instalação do Ambiente](https://www.google.com/search?q=%233-instala%C3%A7%C3%A3o-do-ambiente)
       * [Configuração Inicial do WSL](https://www.google.com/search?q=%23configura%C3%A7%C3%A3o-inicial-do-wsl)
