@@ -318,7 +318,7 @@ Acesse:
 - http://localhost:30001/docs
 
 ---
-### Exemplos de imagens do pipeline:
+### Imagens do pipeline:
 ![Verificação no Kubernetes](img-projeto/localhost_3001.png)
 ![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 ![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png)   
