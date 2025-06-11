@@ -57,8 +57,9 @@ Todos os comandos a seguir devem ser executados no terminal da sua distribuiçã
 ### Configuração Inicial do WSL 
 
  Certifique-se de que o WSL 2 está instalado e é a versão padrão.
+ ```bash
  Abra o PowerShell como administrador e execute:
-
+```
 ```bash
 wsl --install                 # Para nova instalação
 wsl --update                  # Para atualizar
