@@ -66,7 +66,7 @@ wsl --update                  # Para atualizar
 wsl --set-default-version 2   # Definir WSL 2 como padrão
 wsl --install -d Ubuntu       # Instalar Ubuntu (se não tiver)
 ```
-###Docker Desktop
+### Docker Desktop
 O Docker Desktop é fundamental para fornecer o ambiente Docker e o cluster Kubernetes local.
 
 Baixar e Instalar o Docker Desktop:
@@ -95,7 +95,7 @@ Marque "Enable Kubernetes".
 
 Clique em Apply & Restart. Isso pode levar alguns minutos para baixar e configurar o cluster Kubernetes.
 
-Java (JDK 17)
+###  Java (JDK 17)
 Para instalar o Java JDK 17, execute os seguintes comandos no seu terminal WSL:
 ```
 sudo apt update
@@ -128,7 +128,7 @@ Verifique:
 echo $JAVA_HOME
 java -version
 ```
-###Jenkins
+### Jenkins
 Para instalar o Jenkins, siga os passos abaixo no seu terminal WSL:
 
 Adicione a chave do Jenkins ao seu sistema:
@@ -176,7 +176,7 @@ sudo systemctl restart jenkins
 ```
 Você também pode precisar reiniciar o Docker Desktop no Windows para garantir que o socket seja resetado.
 
-##Kubectl
+## Kubectl
 
 Para instalar o kubectl (ferramenta de linha de comando do Kubernetes), siga os passos abaixo no seu terminal WSL:
 
@@ -206,7 +206,7 @@ kubectl version --client
 ```
 Observação: O Kubernetes do Docker Desktop já configura o kubectl para usar seu cluster automaticamente.
 
-##ngrok
+## ngrok
 O ngrok cria um túnel seguro do seu localhost para a internet, permitindo que serviços externos (como o GitHub Webhook) acessem seu Jenkins local.
 
 Instalar ngrok:
