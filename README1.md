@@ -225,7 +225,8 @@ Cole e execute este comando no seu terminal WSL.
 ```
 ngrok config add-authtoken <SEU_AUTHTOKEN_AQUI>
 ```
-4. Fases do Projeto
+## 4. Fases do Projeto
+
 Fase 1: Preparação do Projeto
 Objetivo: Criar a estrutura inicial e garantir o ambiente pronto para o desenvolvimento.
 
@@ -559,7 +560,7 @@ Verifique o console para garantir que "Build Docker Image" e "Push Docker Image"
 
 Entregáveis: Pipeline funcional no Jenkins até o push da imagem.
 
-Fase 5: Jenkins - Deploy no Kubernetes
+## Fase 5: Jenkins - Deploy no Kubernetes
 Objetivo: Configurar o Jenkins para acessar o kubectl e o cluster local, e adicionar uma etapa de deploy no pipeline.
 
 Atividades:
@@ -631,7 +632,7 @@ fastapi-kubernetes-cicd/
 ├── README.md
 └── .gitignore
 ```
-6. Execução e Verificação
+## 6. Execução e Verificação
 Testando a Automação
 Certifique-se de que o ngrok está rodando e o webhook no GitHub está configurado com a URL correta do ngrok (verifique as "Recent Deliveries" no GitHub Webhooks para 200 OK).
 
@@ -669,7 +670,7 @@ http://localhost:30001/color
 
 http://localhost:30001/cat
 ```
-7. Desafios Extras
+## 7. Desafios Extras
 Para aprimorar ainda mais o projeto, considere os seguintes desafios:
 
 Scanner de Vulnerabilidades (Trivy): Criar uma etapa após o push da imagem de contêiner, realizar o scanner de vulnerabilidades, utilizando o Trivy.
