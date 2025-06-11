@@ -25,7 +25,7 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
     * [Verificando a Aplicação no Kubernetes](#verificando-a-aplicação-no-kubernetes)
 7.  [Desafios Extras](#7-desafios-extras)
 
----
+
 
 ## 1. Visão Geral
 
