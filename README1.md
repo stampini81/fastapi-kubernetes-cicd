@@ -615,7 +615,7 @@ Monitore o Jenkins para ver o build disparar automaticamente e verificar se todo
 
 Entregáveis: Pipeline completo com deploy automatizado.
 
-# 5. Estrutura do Projeto
+## 5. Estrutura do Projeto
 A estrutura do seu repositório deve ser a seguinte:
 ```
 fastapi-kubernetes-cicd/
