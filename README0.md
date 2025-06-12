@@ -22,7 +22,7 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
     * [Deploy no Kubernetes](#deploy-no-kubernetes)
     * [Pipeline Jenkins Funcional](#pipeline-jenkins-funcional)
 
----
+
 
 ## 🎯 Desafio
 
@@ -87,7 +87,7 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
 * Divirta-se — e assuste seus colegas com o endpoint `/scare`! 😱
 
 ## 📦 Estrutura Sugerida
-
+---
 
 projeto-pb-automate/
 │
@@ -109,7 +109,7 @@ projeto-pb-automate/
 │   └── frontend-service.yaml
 │
 └── Jenkinsfile
-
+---
 
 ## 📝 Como Rodar Localmente
 
@@ -213,15 +213,15 @@ async def readiness_check(response: Response):
 @app.get("/")
 async def read_root():
     return {"message": "Bem-vindo ao Desafio DevOps FastAPI + React!"}
-
+---
 Conteúdo backend/requirements.txt:
-
+---
 fastapi
 uvicorn[standard]
 httpx
-
+---
 Conteúdo backend/Dockerfile:
-
+---
 FROM python:3.9-slim-buster
 WORKDIR /app
 COPY requirements.txt .
@@ -229,25 +229,38 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
-```bash
+---
+
 # Navegue até o diretório raiz do seu projeto
-# cd ~/projeto-kubernetes-pb-desafio-jenkins/
+---
+ cd ~/projeto-kubernetes-pb-desafio-jenkins/
+---
 # Vá para a pasta backend
+---
 cd backend
+---
 # Instale o Python e pip no seu WSL (se necessário)
+---
 sudo apt update
 sudo apt install python3 python3-pip python3.12-venv -y
+---
 # Crie e ative o ambiente virtual
+---
 python3 -m venv venv && source venv/bin/activate
+---
 # Instale as dependências
+---
 pip install -r requirements.txt --break-system-packages
+---
 # Execute a aplicação localmente com uvicorn
+---
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
+---
+# Frontend
 
-Frontend
 Localização: frontend/
-Conteúdo frontend/src/App.js:
-
+## Conteúdo frontend/src/App.js:
+---
 import React, { useState, useEffect } from 'react';
 
 const API_BASE_URL = process.env.NODE_ENV === 'production'
@@ -392,9 +405,9 @@ const sectionStyle = {
 };
 
 export default App;
-
-Conteúdo frontend/package.json:
-
+---
+## Conteúdo frontend/package.json:
+---
 {
   "name": "frontend",
   "version": "0.1.0",
@@ -429,9 +442,9 @@ Conteúdo frontend/package.json:
     ]
   }
 }
-
-Conteúdo frontend/public/index.html:
-
+---
+## Conteúdo frontend/public/index.html:
+---
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -457,10 +470,11 @@ root.render(
     <App />
   </React.StrictMode>
 );
-
-Conteúdo frontend/Dockerfile:
+---
+## Conteúdo frontend/Dockerfile:
 
 # frontend/Dockerfile
+---
 FROM node:18-alpine AS builder
 WORKDIR /app
 COPY package.json ./
@@ -473,9 +487,9 @@ FROM nginx:alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
-
-Conteúdo docker-compose.yaml (na raiz):
-
+---
+## Conteúdo docker-compose.yaml (na raiz):
+---
 services:
   fastapi-app:
     build:
@@ -500,10 +514,11 @@ services:
     environment:
       REACT_APP_API_BASE_URL: http://fastapi-backend:8000
     restart: always
-
-Conteúdo k8s/app-deploy.yaml:
+---
+## Conteúdo k8s/app-deploy.yaml:
 
 # k8s/app-deploy.yaml
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -538,9 +553,9 @@ spec:
     targetPort: 8000
     nodePort: 30001
   type: NodePort
-
-Conteúdo Jenkinsfile:
-
+---
+## Conteúdo Jenkinsfile:
+---
 // Jenkinsfile
 pipeline {
     agent any
@@ -589,3 +604,4 @@ pipeline {
         }
     }
 }
+---
