@@ -633,7 +633,7 @@ fastapi-kubernetes-cicd/
 └── .gitignore
 ```
 ## 6. Execução e Verificação
-Testando a Automação
+## Testando a Automação
 Certifique-se de que o ngrok está rodando e o webhook no GitHub está configurado com a URL correta do ngrok (verifique as "Recent Deliveries" no GitHub Webhooks para 200 OK).
 
 Faça uma pequena alteração em qualquer arquivo no seu projeto (ex: backend/main.py).
@@ -642,7 +642,7 @@ Faça um git commit e git push para o seu repositório GitHub.
 
 Vá para a página do seu job no Jenkins. Você deverá ver um novo build sendo disparado automaticamente em poucos segundos.
 
-Verificando a Aplicação no Kubernetes
+## Verificando a Aplicação no Kubernetes
 Após o pipeline do Jenkins ser concluído com SUCESSO, verifique a implantação:
 
 Verificar recursos do Kubernetes:
