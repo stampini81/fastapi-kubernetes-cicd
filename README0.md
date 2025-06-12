@@ -36,7 +36,7 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
     * `/joke` — Retorna uma piada (use uma API pública).
     * `/scare` — Retorna uma imagem de susto (ex.: GIF).
     * `/lookalike` — Retorna uma imagem **aleatória** de “sósia”.
-* Adicione suporte a **CORS** no FastAPI para permitir requisições do frontend.
+* Adicione suporte a **CORS** no FastAPI para permitir requisições do frontend..
 * **Adicional:** Inclua endpoints `/health` e `/ready` para verificações de saúde e prontidão, essenciais para orquestração com Kubernetes.
 
 ### 2️⃣ Frontend - React
