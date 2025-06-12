@@ -231,32 +231,32 @@ CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
 ```
 
-# Navegue até o diretório raiz do seu projeto
+## Navegue até o diretório raiz do seu projeto
 ```
  cd ~/projeto-kubernetes-pb-desafio-jenkins/
 ```
-# Vá para a pasta backend
+## Vá para a pasta backend
 ```
 cd backend
 ```
-# Instale o Python e pip no seu WSL (se necessário)
+## Instale o Python e pip no seu WSL (se necessário)
 ```
 sudo apt update
 sudo apt install python3 python3-pip python3.12-venv -y
 ```
-# Crie e ative o ambiente virtual
+## Crie e ative o ambiente virtual
 ```
 python3 -m venv venv && source venv/bin/activate
 ```
-# Instale as dependências
+## Instale as dependências
 ```
 pip install -r requirements.txt --break-system-packages
 ```
-# Execute a aplicação localmente com uvicorn
+## Execute a aplicação localmente com uvicorn
 ```
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
-# Frontend
+## Frontend
 
 Localização: frontend/
 ## Conteúdo frontend/src/App.js:
@@ -458,7 +458,7 @@ export default App;
   </body>
 </html>
 
-Conteúdo frontend/src/index.js:
+## Conteúdo frontend/src/index.js:
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
@@ -473,7 +473,7 @@ root.render(
 ```
 ## Conteúdo frontend/Dockerfile:
 
-# frontend/Dockerfile
+## frontend/Dockerfile
 ```
 FROM node:18-alpine AS builder
 WORKDIR /app
@@ -517,7 +517,7 @@ services:
 ```
 ## Conteúdo k8s/app-deploy.yaml:
 
-# k8s/app-deploy.yaml
+## k8s/app-deploy.yaml
 ```
 apiVersion: apps/v1
 kind: Deployment
@@ -540,7 +540,7 @@ spec:
         image: leandro282/projeto-kubernetes-pb-desafio-jenkins:{{tag}}
         ports:
         - containerPort: 8000
-```
+---
 apiVersion: v1
 kind: Service
 metadata:
