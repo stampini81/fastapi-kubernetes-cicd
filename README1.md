@@ -39,7 +39,7 @@ Tudo isso é disparado automaticamente por eventos de `git push` via GitHub Webh
 
 **Autores:** Davi Santos Cardoso da Silva, Thiago Geremias de Oliveira, Leandro da Silva Stampini.
 **Data de Desenvolvimento:** 28/05/2025.
-**Data da Última Atualização:** 04/06/2025.
+**Data da Última Atualização:** 13/06/2025.
 
 ## 2. Pré-requisitos
 
