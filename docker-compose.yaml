@@ -1,11 +1,27 @@
-
+# docker-compose.yaml
 services:
   fastapi-app:
     build:
-      context: ./backend        
-      dockerfile: Dockerfile    
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8000:8000" # Host:Container
     volumes:
       - ./backend:/app
+    restart: always
+
+  react-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args: # <--- CRÍTICO: Passar variáveis para o build
+        # Para desenvolvimento local, o navegador está no HOST.
+        # Ele precisa acessar o backend via o localhost do HOST.
+        REACT_APP_API_BASE_URL: http://localhost:8000 # <-- AQUI A URL CORRETA PARA TESTE LOCAL
+    ports:
+      - "3000:80" # Host:Container
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - fastapi-app
     restart: always

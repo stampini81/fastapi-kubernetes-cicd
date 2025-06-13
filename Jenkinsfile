@@ -1,58 +1,75 @@
-// Jenkinsfile
 pipeline {
     agent any
 
+    triggers {
+        githubPush() // Gatilho para disparar o pipeline por eventos de push do GitHub
+    }
+
     stages {
-        stage('Build Docker Image') {
+        stage('Build Backend Docker Image') {
             steps {
                 script {
-                    // Constrói a imagem Docker. A tag usa o BUILD_ID do Jenkins.
-                    // Substitua 'leandro282' pelo seu username EXATO do Docker Hub.
-                    // O Dockerfile está em 'backend/Dockerfile' e o contexto do build é 'backend/'.
-                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins:${env.BUILD_ID}", "./backend")
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}", "./backend")
                 }
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Build Frontend Docker Image') {
             steps {
                 script {
-                    // Autentica no Docker Hub usando a credencial 'dockerhub' configurada no Jenkins.
-                    // Empurra a imagem com a tag 'latest' e com a tag BUILD_ID.
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}", "./frontend")
+                }
+            }
+        }
+
+        stage('Push Backend Docker Image') {
+            steps {
+                script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins:${env.BUILD_ID}").push('latest')
-                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins:${env.BUILD_ID}").push("${env.BUILD_ID}")
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}").push('latest')
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}").push("${env.BUILD_ID}")
                     }
                 }
             }
         }
 
-        stage('Deploy no Kubernetes') {
-            environment {
-                // Define uma variável de ambiente para a BUILD_ID para usar no shell script
-                tag_version = "${env.BUILD_ID}"
-            }
+        stage('Push Frontend Docker Image') {
             steps {
-                // Usa a credencial 'kubeconfig' configurada no Jenkins para acessar o cluster Kubernetes.
-                withKubeConfig([credentialsId: 'kubeconfig']) {
-                    // Substitui o placeholder {{tag}} no app-deploy.yaml pela tag da versão atual (BUILD_ID).
-                    // O 'sed -i' edita o arquivo no local dentro do workspace do Jenkins.
-                    sh "sed -i 's|{{tag}}|${tag_version}|g' ./k8s/app-deploy.yaml"
-
-                    // Aplica o arquivo YAML modificado ao cluster Kubernetes.
-                    sh 'kubectl apply -f k8s/app-deploy.yaml'
-
-                    // Aguarda o rollout do Deployment para confirmar que foi bem-sucedido.
-                    sh 'kubectl rollout status deployment/fastapi-app-deployment'
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}").push('latest')
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}").push("${env.BUILD_ID}")
+                    }
                 }
             }
         }
 
-        stage('Chuck Norris') {
-            steps {
-                // Adiciona o plugin Chuck Norris para exibir mensagens engraçadas.
-                step([$class: 'CordellWalkerRecorder'])
+        stage('Deploy to Kubernetes') {
+            environment {
+                BACKEND_TAG = "${env.BUILD_ID}"
+                FRONTEND_TAG = "${env.BUILD_ID}"
             }
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    // Substitui a tag da imagem do Backend no YAML do Backend
+                    sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${BACKEND_TAG}|g' ./k8s/backend-deployment.yaml"
+                    // Substitui a tag da imagem do Frontend no YAML do Frontend
+                    sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${FRONTEND_TAG}|g' ./k8s/frontend-deployment.yaml"
+
+                    // Aplica os YAMLs do Backend
+                    sh 'kubectl apply -f k8s/backend-deployment.yaml'
+                    sh 'kubectl rollout status deployment/fastapi-backend-deployment'
+
+                    // Aplica os YAMLs do Frontend
+                    sh 'kubectl apply -f k8s/frontend-deployment.yaml'
+                    sh 'kubectl rollout status deployment/react-frontend-deployment'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            step([$class: 'CordellWalkerRecorder'])
         }
     }
 }
