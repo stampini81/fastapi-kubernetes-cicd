@@ -1,4 +1,4 @@
-    ##. Desafios Extras
+## . Desafios Extras
 
     Para aprimorar ainda mais o projeto, considere os seguintes desafios:
 
@@ -56,4 +56,4 @@
     * [Notificações (Slack/Discord)](#notificações-slackdiscord)
     * [Análise de Código Estática (SonarQube)](#análise-de-código-estática-sast-sonarqube)
     * [Helm Chart](#helm-chart)
-    
+    ```
