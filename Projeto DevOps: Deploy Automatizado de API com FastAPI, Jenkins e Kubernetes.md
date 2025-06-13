@@ -23,8 +23,6 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
 6.  [Execução e Verificação](#6-execução-e-verificação)
     * [Testando a Automação](#testando-a-automação)
     * [Verificando a Aplicação no Kubernetes](#verificando-a-aplicação-no-kubernetes)
-7.  [Desafios Extras](#7-desafios-extras)
-
 
 
 ## 1. Visão Geral
@@ -680,13 +678,3 @@ http://localhost:30001/cat
 ```
 ![FAST_API](img-projeto/FastAPI4.png)
 
-## 7. Desafios Extras
-Para aprimorar ainda mais o projeto, considere os seguintes desafios:
-
-Scanner de Vulnerabilidades (Trivy): Criar uma etapa após o push da imagem de contêiner, realizar o scanner de vulnerabilidades, utilizando o Trivy.
-
-Notificações (Slack/Discord): Criar um webhook com o Slack ou Discord para avisar quando a pipeline for atualizada no ambiente Kubernetes.
-
-Análise de Código Estática (SonarQube): Subir o SonarQube em ambiente Docker e conectá-lo com o Jenkins e enviar todo o código da aplicação para a análise SAST.
-
-Helm Chart: Utilizar Helm Chart para implantar a aplicação no Kubernetes.
