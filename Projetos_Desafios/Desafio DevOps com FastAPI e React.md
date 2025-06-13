@@ -17,9 +17,9 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
     * [Backend](#backend)
     * [Frontend](#frontend)
 6.  [✅ Validações e Prints do Projeto](../img-projeto)
-    * [Fase de Conteinerização (Docker Hub)](../img-projeto/Docker_Hub_imagem_criada_e_pipeline.png)
+    * [Fase de Conteinerização (Docker Hub)](../img-projeto/build.png)
     * [Automação Jenkins (Commit e Push)](../img-projeto/push_automatizado.png)
-    * [Deploy no Kubernetes](../img-projeto/Fast_api_React.png)
+    * [Deploy no Kubernetes](../img-projeto/Docker_Hub_imagem_criada_e_pipeline.png)
     * [Pipeline Jenkins Funcional](../img-projeto/Pipeline_chuck_norris.png)
 
 
