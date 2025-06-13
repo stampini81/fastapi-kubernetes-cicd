@@ -16,11 +16,11 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
 5.  [📝 Como Rodar Localmente](#-como-rodar-localmente)
     * [Backend](#backend)
     * [Frontend](#frontend)
-6.  [✅ Validações e Prints do Projeto](#-validações-e-prints-do-projeto)
-    * [Fase de Conteinerização (Docker Hub)](#fase-de-conteinerização-docker-hub)
-    * [Automação Jenkins (Commit e Push)](#automação-jenkins-commit-e-push)
-    * [Deploy no Kubernetes](#deploy-no-kubernetes)
-    * [Pipeline Jenkins Funcional](#pipeline-jenkins-funcional)
+6.  [✅ Validações e Prints do Projeto](../img-projeto)
+    * [Fase de Conteinerização (Docker Hub)](../img-projeto/docker_hub_img.png)
+    * [Automação Jenkins (Commit e Push)](../img-projeto/push_automatizado.png)
+    * [Deploy no Kubernetes](../img-projeto/Docker_Hub_imagem_criada_e_pipeline.png)
+    * [Pipeline Jenkins Funcional](../img-projeto/Pipeline_chuck_norris.png)
 
 
 

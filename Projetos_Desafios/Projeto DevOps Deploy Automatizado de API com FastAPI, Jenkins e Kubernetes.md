@@ -23,8 +23,6 @@ Este repositório contém um exemplo prático de como configurar um pipeline de 
 6.  [Execução e Verificação](#6-execução-e-verificação)
     * [Testando a Automação](#testando-a-automação)
     * [Verificando a Aplicação no Kubernetes](#verificando-a-aplicação-no-kubernetes)
-7.  [Desafios Extras](#7-desafios-extras)
-
 
 
 ## 1. Visão Geral
@@ -158,6 +156,7 @@ Verifique o status:
 sudo systemctl status jenkins
 ```
 Acesse o Jenkins no seu navegador: http://localhost:8080
+![Jenkins](../img-projeto/build.png)
 
 Chave de Segurança Inicial:
 Para obter a senha inicial de administrador do Jenkins:
@@ -289,11 +288,13 @@ git commit -m "Fase 1: Preparacao do projeto - Codigo base, repo GitHub, e endpo
 git push origin main # Ou master
 ```
 Criar conta no Docker Hub.
+
 ```
 Acesse https://hub.docker.com/ e crie uma conta gratuita, se ainda não tiver. Anote seu nome de usuário.
 ```
-Verificar acesso ao cluster Kubernetes local:
 
+Verificar acesso ao cluster Kubernetes local:
+![Imagem Docker Hub](../img-projeto/docker_hub_img.png) 
 Certifique-se de que o Docker Desktop está instalado e rodando no Windows e que o Kubernetes está habilitado nas configurações.
 
 No terminal WSL, verifique o status do cluster:
@@ -316,6 +317,9 @@ Instale as dependências: pip install -r requirements.txt
 Execute a aplicação localmente com uvicorn: uvicorn main:app --host 0.0.0.0 --port 8000
 
 Acesse http://localhost:8000/docs (e /health, /ready) no navegador para validar.
+![FAST_API](../img-projeto/FastAPI1.png)
+![FAST_API](../img-projeto/FastAPI2.png)
+![FAST_API](../img-projeto/FastAPI3.png)
 
 Entregáveis: Código rodando localmente, repositório do GitHub criado e ambiente preparado.
 
@@ -338,7 +342,7 @@ COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
 ```
-![Verificação no Kubernetes](img-projeto/localhost_3001.png)
+
 
 Criar docker-compose.yaml (Opcional para teste local):
 
@@ -374,13 +378,11 @@ Faça o push: docker push seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-je
 Verificação: Acesse seu Docker Hub no navegador.
 
 
-![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
-
-
+![Imagem Docker Hub](../img-projeto/docker_hub_img.png) 
 ```
 docker-docs.uclv.cu
 ```
-![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
+
 
 
 Versionar o Dockerfile e docker-compose.yaml no GitHub:
@@ -391,10 +393,12 @@ git add .
 git commit -m "Fase 2: Conteinerizacao - Adicionar Dockerfile, docker-compose.yaml e testar build/push local."
 git push origin main
 ```
-Imagem: 
 
 Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml versionados no GitHub.
 
+Imagem: 
+
+![Pipeline no Jenkins](../img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
 # Fase 3: Arquivos de Deploy no Kubernetes
 Objetivo: Criar e aplicar manualmente os arquivos YAML para o Deployment e Service da aplicação FastAPI no Kubernetes local.
 
@@ -459,7 +463,7 @@ Validar a execução da aplicação a partir do Kubernetes:
 Acesse no navegador: http://localhost:30001/docs (e /health, /color, etc.).
 
 
-![Verificação no Kubernetes](img-projeto/localhost_3001.png)
+![Verificação no Kubernetes](../img-projeto/localhost_3001.png)
 
 Entregáveis: Aplicativo exposto em localhost:30001 via NodePort ou rodando via port-forward. O aplicativo precisa estar funcionando a partir do Kubernetes.
 
@@ -555,12 +559,12 @@ Faça o git add ., git commit, git push do Jenkinsfile para o GitHub.
 
 No Jenkins, clique em "Build Now".
 
-Verifique o console para garantir que "Build Docker Image" e "Push Docker Image" são concluídos com SUCESSO.
-
-![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png) 
-![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)  
+Verifique o console para garantir que "Build Docker Image" e "Push Docker Image" são concluídos com SUCESSO.  
 
 Entregáveis: Pipeline funcional no Jenkins até o push da imagem.
+![Pipeline no Jenkins](../img-projeto/Pipeline_Jenkinsfile.png) 
+![Pipeline no Jenkins](../img-projeto/push_automatizado1.png)
+
 
 ## Fase 5: Jenkins - Deploy no Kubernetes
 Objetivo: Configurar o Jenkins para acessar o kubectl e o cluster local, e adicionar uma etapa de deploy no pipeline.
@@ -616,7 +620,7 @@ Faça git add ., git commit, git push origin main.
 Monitore o Jenkins para ver o build disparar automaticamente e verificar se todos os estágios são concluídos com SUCESSO.
 
 Entregáveis: Pipeline completo com deploy automatizado.
-
+![Pipeline no Jenkins](../img-projeto/push_automatizado1.png)
 ## 5. Estrutura do Projeto
 A estrutura do seu repositório deve ser a seguinte:
 ```
@@ -672,13 +676,5 @@ http://localhost:30001/color
 
 http://localhost:30001/cat
 ```
-## 7. Desafios Extras
-Para aprimorar ainda mais o projeto, considere os seguintes desafios:
+![FAST_API](../img-projeto/FastAPI4.png)
 
-Scanner de Vulnerabilidades (Trivy): Criar uma etapa após o push da imagem de contêiner, realizar o scanner de vulnerabilidades, utilizando o Trivy.
-
-Notificações (Slack/Discord): Criar um webhook com o Slack ou Discord para avisar quando a pipeline for atualizada no ambiente Kubernetes.
-
-Análise de Código Estática (SonarQube): Subir o SonarQube em ambiente Docker e conectá-lo com o Jenkins e enviar todo o código da aplicação para a análise SAST.
-
-Helm Chart: Utilizar Helm Chart para implantar a aplicação no Kubernetes.
