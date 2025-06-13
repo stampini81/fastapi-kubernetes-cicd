@@ -344,7 +344,7 @@ COPY . .
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
 EXPOSE 8000
 ```
-![Verificação no Kubernetes](img-projeto/localhost_3001.png)
+
 
 Criar docker-compose.yaml (Opcional para teste local):
 
@@ -393,10 +393,13 @@ git add .
 git commit -m "Fase 2: Conteinerizacao - Adicionar Dockerfile, docker-compose.yaml e testar build/push local."
 git push origin main
 ```
-Imagem: 
-![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 
 Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml versionados no GitHub.
+
+Imagem: 
+
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
+![Verificação no Kubernetes](img-projeto/localhost_3001.png)
 
 # Fase 3: Arquivos de Deploy no Kubernetes
 Objetivo: Criar e aplicar manualmente os arquivos YAML para o Deployment e Service da aplicação FastAPI no Kubernetes local.
