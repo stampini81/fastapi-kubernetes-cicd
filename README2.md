@@ -56,4 +56,4 @@
     * [Notificações (Slack/Discord)](#notificações-slackdiscord)
     * [Análise de Código Estática (SonarQube)](#análise-de-código-estática-sast-sonarqube)
     * [Helm Chart](#helm-chart)
-    ```
+    
