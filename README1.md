@@ -317,6 +317,9 @@ Instale as dependências: pip install -r requirements.txt
 Execute a aplicação localmente com uvicorn: uvicorn main:app --host 0.0.0.0 --port 8000
 
 Acesse http://localhost:8000/docs (e /health, /ready) no navegador para validar.
+![FAST_API](img-projeto/FastAPI1.png)
+![FAST_API](img-projeto/FastAPI2.png)
+![FAST_API](img-projeto/FastAPI3.png)
 
 Entregáveis: Código rodando localmente, repositório do GitHub criado e ambiente preparado.
 
