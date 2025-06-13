@@ -5,23 +5,21 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000" # Host:Container
+      - "8000:8000"
     volumes:
       - ./backend:/app
     restart: always
 
   react-frontend:
     build:
-      context: ./frontend_old
-      dockerfile: Dockerfile
-      args: # <--- CRÍTICO: Passar variáveis para o build
-        # Para desenvolvimento local, o navegador está no HOST.
-        # Ele precisa acessar o backend via o localhost do HOST.
-        REACT_APP_API_BASE_URL: http://localhost:8000 # <-- AQUI A URL CORRETA PARA TESTE LOCAL
+      context: ./frontend_old # <--- MUDANÇA AQUI: Contexto é a pasta frontend_old
+      dockerfile: Dockerfile   # O Dockerfile deve estar dentro de frontend_old/
+      args:
+        REACT_APP_API_BASE_URL: http://localhost:8000
     ports:
-      - "3000:80" # Host:Container
+      - "3000:80"
     volumes:
-      - ./frontend_old:/app
+      - ./frontend_old:/app # <--- MUDANÇA AQUI: Mapeia o volume para frontend_old/
     depends_on:
       - fastapi-app
     restart: always
