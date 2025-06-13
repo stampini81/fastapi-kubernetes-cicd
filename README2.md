@@ -1,164 +1,562 @@
-Desafios Extras: Aprimorando o Pipeline CI/CDEsta seção detalha os desafios extras implementados para aprimorar o pipeline de CI/CD, adicionando funcionalidades de segurança, notificação, análise de código e orquestração avançada.SumárioScanner de Vulnerabilidades (Trivy)Notificações (Slack/Discord)Análise de Código Estática (SonarQube)Helm ChartScanner de Vulnerabilidades (Trivy)Para adicionar uma camada de segurança ao pipeline, foi integrado o Trivy, um scanner de vulnerabilidades de imagem de contêiner. Ele verifica as imagens Docker por vulnerabilidades conhecidas em pacotes, dependências e configurações.Integração no Pipeline:Após a construção e o push das imagens Docker, um novo estágio é executado para escanear a imagem do backend (e opcionalmente o frontend). O pipeline será configurado para falhar se vulnerabilidades de severidade ALTA ou CRÍTICA forem detectadas, impedindo o deploy de imagens potencialmente inseguras para o cluster Kubernetes.Passos para Configuração:Instalar Trivy no ambiente WSL (Agente Jenkins):sudo apt update
-sudo apt install wget apt-transport-https gnupg -y
-wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-echo deb https://aquasecurity.github.io/trivy-repo/deb/ $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+# Desafio DevOps com FastAPI e React 🚀
+
+Este repositório contém um exemplo prático de como configurar um pipeline de Integração Contínua (CI) e Entrega Contínua (CD) utilizando Jenkins, Docker e Kubernetes rodando no **Windows Subsystem for Linux (WSL)**. A solução utiliza o **Docker Desktop** como ambiente de containerização e cluster Kubernetes local, e o **Docker Hub** para gerenciamento de imagens Docker. A automação dos builds é feita via GitHub Webhooks, seguindo conceitos de um fluxo de CI/CD.
+
+## Sumário
+
+1.  [🎯 Desafio](#-desafio)
+    * [1️⃣ Backend - FastAPI](#1%EF%B8%8F%E2%83%A3-backend---fastapi)
+    * [2️⃣ Frontend - React](#2%EF%B8%8F%E2%83%A3-frontend---react)
+    * [3️⃣ Containerização](#3%EF%B8%8F%E2%83%A3-conteinerização)
+    * [4️⃣ Integração com Jenkins](#4%EF%B8%8F%E2%83%A3-integração-com-jenkins)
+    * [5️⃣ Orquestração com Kubernetes](#5%EF%B8%8F%E2%83%A3-orquestração-com-kubernetes)
+2.  [🚀 Entregáveis](#-entregáveis)
+3.  [💡 Dicas](#-dicas)
+4.  [📦 Estrutura Sugerida](#-estrutura-sugerida)
+5.  [📝 Como Rodar Localmente](#-como-rodar-localmente)
+    * [Backend](#backend)
+    * [Frontend](#frontend)
+    * [Ambos com Docker Compose](#ambos-com-docker-compose)
+6.  [✅ Validações e Prints do Projeto](#-validações-e-prints-do-projeto)
+    * [Fase de Conteinerização (Docker Hub)](#fase-de-conteinerização-docker-hub)
+    * [Automação Jenkins (Commit e Push)](#automação-jenkins-commit-e-push)
+    * [Deploy no Kubernetes](#deploy-no-kubernetes)
+    * [Pipeline Jenkins Funcional](#pipeline-jenkins-funcional)
+7.  [🛠️ Desafios Extras Implementados](#%EF%B8%8F-desafios-extras-implementados)
+    * [Scanner de Vulnerabilidades (Trivy)](#scanner-de-vulnerabilidades-trivy)
+    * [Notificações (Slack/Discord)](#notificações-slackdiscord)
+    * [Análise de Código Estática (SonarQube)](#análise-de-código-estática-sonarqube)
+    * [Helm Chart](#helm-chart)
+
+---
+
+## 🎯 Desafio
+
+### 1️⃣ Backend - FastAPI
+
+* Crie 7 endpoints no backend:
+    * `/color` — Retorna uma cor **aleatória** para o fundo da página.
+    * `/cat` — Retorna uma imagem **aleatória** de gato.
+    * `/random-photo` — Retorna uma foto **aleatória** (ex.: via Picsum).
+    * `/time` — Retorna o horário atual do servidor.
+    * `/joke` — Retorna uma piada (use uma API pública).
+    * `/scare` — Retorna uma imagem de susto (ex.: GIF).
+    * `/lookalike` — Retorna uma imagem **aleatória** de “sósia”.
+* Adicione suporte a **CORS** no FastAPI para permitir requisições do frontend.
+* **Adicional:** Inclua endpoints `/health` e `/ready` para verificações de saúde e prontidão, essenciais para orquestração com Kubernetes.
+
+### 2️⃣ Frontend - React
+
+* Crie uma interface simples que:
+    * Mostra a cor de fundo retornada pelo backend.
+    * Exibe a imagem aleatória de gato.
+    * Exibe a foto aleatória.
+    * Mostra o horário atual.
+    * Inclui um botão “Susto” para exibir a imagem de susto.
+    * Inclui um botão “Sósia” para exibir a imagem aleatória de “quem parece com você”.
+
+### 3️⃣ Containerização
+
+* Crie um `Dockerfile` para o backend.
+* Crie um `Dockerfile` para o frontend.
+* Suba as imagens no **Docker Hub** ou outro registry.
+
+### 4️⃣ Integração com Jenkins
+
+* Configure um `Jenkinsfile` para:
+    * Buildar as imagens Docker do backend e frontend.
+    * Fazer push das imagens para o registry.
+    * Aplicar os manifests no Kubernetes.
+    * Disparar o pipeline automaticamente via GitHub Webhooks.
+
+### 5️⃣ Orquestração com Kubernetes
+
+* Crie manifestos Kubernetes para:
+    * Deployments para backend e frontend.
+    * Services para backend e frontend.
+    * (Opcional) Um Ingress para rotear tudo bonitinho.
+
+## 🚀 Entregáveis
+
+* ✅ Backend funcional em FastAPI.
+* ✅ Frontend React consumindo os endpoints.
+* ✅ Dockerfiles para cada app.
+* ✅ Jenkinsfile com pipeline CI/CD.
+* ✅ Deploy no Kubernetes local (Docker Desktop no WSL).
+
+## 💡 Dicas
+
+* Use `uvicorn` com `--reload` no backend para desenvolver mais rápido.
+* Use `serve` para servir o build do React.
+* Para CORS, habilite todas as origens para dev (`allow_origins=["*"]`).
+* Use `kubectl apply -f` para aplicar os manifests.
+* Divirta-se — e assuste seus colegas com o endpoint `/scare`! 😱
+
+## 📦 Estrutura Sugerida
+
+```
+projeto-kubernetes-pb-desafio-jenkins/
+│
+├── backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+│
+├── frontend/
+│   ├── public/
+│   │   └── index.html
+│   ├── src/
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── package.json
+│   └── Dockerfile
+│
+├── k8s/
+│   ├── backend-deployment.yaml
+│   ├── backend-service.yaml
+│   ├── frontend-deployment.yaml
+│   └── frontend-service.yaml
+│
+├── Jenkinsfile
+├── docker-compose.yaml
+└── README.md
+```
+
+## 📝 Como Rodar Localmente
+
+### Backend
+
+**Localização:** `backend/`
+
+**Conteúdo `backend/main.py`:**
+```python
+from fastapi import FastAPI, Response
+from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
+from datetime import datetime
+import random
+import httpx
+import os
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+@app.get("/color")
+async def get_random_color():
+    colors = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF3", "#FFDD33", "#33FFDD"]
+    return {"cor": random.choice(colors)}
+
+@app.get("/cat")
+async def get_random_cat_image():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("[https://api.thecatapi.com/v1/images/search](https://api.thecatapi.com/v1/images/search)")
+        if response.status_code == 200:
+            data = response.json()
+            image_url = data[0]['url'] if data else "[https://via.placeholder.com/150/FF0000/FFFFFF?text=No+Cat+Found](https://via.placeholder.com/150/FF0000/FFFFFF?text=No+Cat+Found)"
+            return {"cat_image_url": image_url}
+        return JSONResponse(content={"error": "Failed to fetch cat image"}, status_code=response.status_code)
+
+@app.get("/random-photo")
+async def get_random_photo():
+    width = random.randint(300, 800)
+    height = random.randint(300, 800)
+    photo_url = f"[https://picsum.photos/](https://picsum.photos/){width}/{height}"
+    return {"random_photo_url": photo_url}
+
+@app.get("/time")
+async def get_current_time():
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    return {"current_time": now}
+
+@app.get("/joke")
+async def get_joke():
+    async with httpx.AsyncClient() as client:
+        response = await client.get("[https://official-joke-api.appspot.com/random_joke](https://official-joke-api.appspot.com/random_joke)")
+        if response.status_code == 200:
+            joke_data = response.json()
+            joke_text = f"{joke_data.get('setup', '')} - {joke_data.get('punchline', '')}"
+            return {"joke": joke_text}
+        return JSONResponse(content={"error": "Failed to fetch joke"}, status_code=response.status_code)
+
+@app.get("/scare")
+async def scare():
+    scare_images = [
+        "[https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif](https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif)",
+        "[https://media.giphy.com/media/26xBI73gWquCBBCDe/giphy.gif](https://media.giphy.com/media/26xBI73gWquCBBCDe/giphy.gif)",
+        "[https://media.giphy.com/media/3o7TKr3nzgq5DlvmLt/giphy.gif](https://media.giphy.com/media/3o7TKr3nzgq5DlvmLt/giphy.gif)"
+    ]
+    random_scare = random.choice(scare_images)
+    return {"scare_image_url": random_scare}
+
+@app.get("/lookalike")
+async def lookalike():
+    lookalike_images = [
+        "[https://randomuser.me/api/portraits/men/1.jpg](https://randomuser.me/api/portraits/men/1.jpg)",
+        "[https://randomuser.me/api/portraits/women/1.jpg](https://randomuser.me/api/portraits/women/1.jpg)",
+        "[https://randomuser.me/api/portraits/lego/1.jpg](https://randomuser.me/api/portraits/lego/1.jpg)",
+        "[https://randomuser.me/api/portraits/thumb/men/75.jpg](https://randomuser.me/api/portraits/thumb/men/75.jpg)"
+    ]
+    random_lookalike = random.choice(lookalike_images)
+    return {"lookalike_image_url": random_lookalike}
+
+@app.get("/health")
+async def health_check():
+    """Verifica se a aplicação está em execução."""
+    return {"status": "UP", "hostname": os.uname().nodename}
+
+@app.get("/ready")
+async def readiness_check(response: Response):
+    """Verifica se a aplicação está pronta para receber tráfego."""
+    is_ready = True
+    if is_ready:
+        response.status_code = 200
+        return {"status": "READY", "hostname": os.uname().nodename}
+    else:
+        response.status_code = 503
+        return {"status": "NOT READY", "hostname": os.uname().nodename}
+
+@app.get("/")
+async def read_root():
+    return {"message": "Bem-vindo ao Desafio DevOps FastAPI + React!"}
+```
+**Conteúdo `backend/requirements.txt`:**
+```
+fastapi
+uvicorn[standard]
+httpx
+```
+**Conteúdo `backend/Dockerfile`:**
+```dockerfile
+FROM python:3.9-slim-buster
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8000
+```bash
+# Navegue até o diretório raiz do seu projeto
+# cd ~/projeto-kubernetes-pb-desafio-jenkins/
+# Vá para a pasta backend
+cd backend
+# Instale o Python e pip no seu WSL (se necessário)
 sudo apt update
-sudo apt install trivy -y
-Verificar instalação: trivy versionAdicionar Estágio de Scan no Jenkinsfile:Adicione este estágio logo após o estágio Push Frontend Docker Image.// Jenkinsfile (Trecho relevante)
-stage('Scan Vulnerabilities (Trivy)') {
-    steps {
-        script {
-            sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --format table --no-progress leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}"
-            // Opcional: Escanear a imagem do Frontend também
-            // sh "trivy image --severity HIGH,CRITICAL --exit-code 1 --format table --no-progress leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}"
-        }
-    }
-}
-Saída Esperada no Jenkins:No console de saída do Jenkins, você verá um relatório detalhado das vulnerabilidades encontradas (ou a mensagem de que nenhuma vulnerabilidade crítica foi detectada).Exemplo de saída de scan bem-sucedido (sem vulnerabilidades que causem falha):...
-[Pipeline] stage
-[Pipeline] { (Scan Vulnerabilities (Trivy))
-[Pipeline] script
-[Pipeline] {
-[Pipeline] sh
-+ trivy image --severity HIGH,CRITICAL --exit-code 1 --format table --no-progress leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:BUILD_ID
-2025-06-12T10:00:00Z INFO 
-2025-06-12T10:00:00Z INFO Target: leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:BUILD_ID (python 3.9.18)
-2025-06-12T10:00:00Z INFO 
-2025-06-12T10:00:00Z INFO No vulnerabilities found
-...
-Total: 0 (UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+sudo apt install python3 python3-pip python3.12-venv -y
+# Crie e ative o ambiente virtual
+python3 -m venv venv && source venv/bin/activate
+# Instale as dependências
+pip install -r requirements.txt --break-system-packages
+# Execute a aplicação localmente com uvicorn
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-[Pipeline] }
-[Pipeline] // script
-[Pipeline] }
-[Pipeline] // stage
-...
-Notificações (Slack/Discord)Para manter a equipe informada sobre o status do pipeline, foram configuradas notificações automáticas para o Slack (ou Discord). O Jenkins enviará uma mensagem informando o resultado do build (sucesso ou falha) e o link direto para o log do job.Integração no Pipeline:As notificações são adicionadas à seção post do Jenkinsfile, o que garante que elas sejam enviadas após a conclusão de todos os estágios do pipeline, independentemente do resultado.Passos para Configuração:Configurar Webhook no Discord (ou Slack):Abra seu servidor Discord e vá em Configurações do Servidor > Integrações > Webhooks > Criar Webhook.Selecione um canal e copie a "Webhook URL".(Para Slack, acesse seu workspace, vá em "Apps" e procure por "Incoming WebHooks").Instalar Plugin Jenkins:Vá para Gerenciar Jenkins > Gerenciar Plugins.Na aba Disponíveis, procure por Discord Notification (ou Slack Notification). Instale-o.Configurar Credenciais de Notificação no Jenkins:Vá para Gerenciar Jenkins > Gerenciar Credenciais > Jenkins (store global).Clique em "+ Adicionar Credenciais".Tipo: "Secret text".Secret: Cole a URL do Webhook que você copiou do Discord/Slack.ID: discord-webhook-url (ou slack-webhook-url).Clique em "Criar".Adicionar Notificação ao Jenkinsfile:Adicione o seguinte bloco à seção post do seu Jenkinsfile.// Jenkinsfile (Trecho relevante da seção 'post')
-post {
-    // Envia notificação em caso de sucesso
-    success {
-        def jobUrl = "${env.JENKINS_URL}${env.JOB_NAME}/${env.BUILD_NUMBER}/"
-        withCredentials([string(credentialsId: 'discord-webhook-url', variable: 'WEBHOOK_URL')]) {
-            discordSend(webhookUrl: env.WEBHOOK_URL, message: "PROJETO CI/CD: Build #${env.BUILD_NUMBER} - SUCESSO! Aplicação atualizada. URL do Job: ${jobUrl}")
+### Frontend
+
+**Localização:** `frontend/`
+**Conteúdo `frontend/src/App.js`:**
+```javascript
+import React, { useState, useEffect } from 'react';
+
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'http://fastapi-backend-service:8000'
+  : 'http://localhost:8000';
+
+function App() {
+  const [color, setColor] = useState('white');
+  const [catImage, setCatImage] = useState('');
+  const [randomPhoto, setRandomPhoto] = useState('');
+  const [currentTime, setCurrentTime] = useState('');
+  const [scareImage, setScareImage] = useState('');
+  const [lookalikeImage, setLookalikeImage] = useState('');
+  const [joke, setJoke] = useState('');
+  const [backendStatus, setBackendStatus] = useState('Verificando...');
+
+  const fetchData = async (endpoint, setter) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/${endpoint}`);
+      const data = await response.json();
+      console.log(`Dados recebidos para '${endpoint}':`, data);
+
+      if (response.ok) {
+        let valueToSet;
+        if (endpoint === 'color') {
+          valueToSet = data.cor;
+        } else if (endpoint === 'cat') {
+          valueToSet = data.cat_image_url;
+        } else if (endpoint === 'random-photo') {
+          valueToSet = data.random_photo_url;
+        } else if (endpoint === 'time') {
+          valueToSet = data.current_time;
+        } else if (endpoint === 'joke') {
+          valueToSet = data.joke;
+        } else if (endpoint === 'scare') {
+          valueToSet = data.scare_image_url;
+        } else if (endpoint === 'lookalike') {
+          valueToSet = data.lookalike_image_url;
+        } else if (endpoint === 'health' || endpoint === 'ready') {
+          valueToSet = data.status;
         }
+        
+        setter(valueToSet);
+      } else {
+        console.error(`Erro ao buscar '${endpoint}':`, data.detail || response.statusText);
+        setter(`Erro ao carregar '${endpoint}'`);
+      }
+    } catch (error) {
+      console.error(`Falha na requisição para '${endpoint}':`, error);
+      setBackendStatus(`Backend OFFLINE (${endpoint} falhou)`);
     }
-    // Envia notificação em caso de falha
-    failure {
-        def jobUrl = "${env.JENKINS_URL}${env.JOB_NAME}/${env.BUILD_NUMBER}/"
-        withCredentials([string(credentialsId: 'discord-webhook-url', variable: 'WEBHOOK_URL')]) {
-            discordSend(webhookUrl: env.WEBHOOK_URL, message: "PROJETO CI/CD: Build #${env.BUILD_NUMBER} - FALHA! Erro no pipeline. URL do Job: ${jobUrl}", color: '#FF0000')
-        }
+  };
+
+  useEffect(() => {
+    fetchData('color', setColor);
+    fetchData('cat', setCatImage);
+    fetchData('random-photo', setRandomPhoto);
+    fetchData('time', setCurrentTime);
+    fetchData('joke', setJoke); 
+    checkBackendHealth();
+  }, []);
+
+  const checkBackendHealth = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/health`);
+      if (response.ok) {
+        const data = await response.json();
+        setBackendStatus(`Backend OK! (${data.status})`);
+      } else {
+        setBackendStatus(`Backend com erro: ${response.status}`);
+      }
+    } catch (error) {
+      setBackendStatus('Backend OFFLINE');
     }
-    // Sempre executa, incluindo o Chuck Norris
-    always {
-        step([$class: 'CordellWalkerRecorder'])
-    }
+  };
+
+  const updateRandomPhoto = () => fetchData('random-photo', setRandomPhoto);
+  const updateCatImage = () => fetchData('cat', setCatImage);
+  const updateColor = () => fetchData('color', setColor);
+  const updateTime = () => fetchData('time', setCurrentTime);
+  const updateJoke = () => fetchData('joke', setJoke);
+
+  return (
+    <div style={{ backgroundColor: color, minHeight: '100vh', padding: '20px', transition: 'background-color 0.5s ease' }}>
+      <h1>Desafio DevOps FastAPI + React 🚀</h1>
+      <p>Status do Backend: {backendStatus}</p>
+
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', marginTop: '20px' }}>
+        <div style={sectionStyle}>
+          <h2>Cor de Fundo</h2>
+          <p>Cor atual: {color}</p>
+          <button onClick={updateColor}>Nova Cor</button>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Imagem de Gato</h2>
+          {catImage && <img src={catImage} alt="Gato aleatório" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block', margin: 'auto' }} />}
+          <button onClick={updateCatImage}>Novo Gato</button>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Foto Aleatória</h2>
+          {randomPhoto && <img src={randomPhoto} alt="Foto aleatória" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block', margin: 'auto' }} />}
+          <button onClick={updateRandomPhoto}>Nova Foto</button>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Horário Atual</h2>
+          <p>{currentTime}</p>
+          <button onClick={updateTime}>Atualizar Horário</button>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Piada</h2>
+          <p>{joke}</p>
+          <button onClick={updateJoke}>Nova Piada</button>
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Susto 😱</h2>
+          <button onClick={() => fetchData('scare', setScareImage)}>Mostrar Susto</button>
+          {scareImage && <img src={scareImage} alt="Susto" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block', margin: 'auto', marginTop: '10px' }} />}
+        </div>
+
+        <div style={sectionStyle}>
+          <h2>Sósia 🧑‍🤝‍🧑</h2>
+          <button onClick={() => fetchData('lookalike', setLookalikeImage)}>Encontrar Sósia</button>
+          {lookalikeImage && <img src={lookalikeImage} alt="Sósia" style={{ maxWidth: '200px', maxHeight: '200px', display: 'block', margin: 'auto', marginTop: '10px' }} />}
+        </div>
+      </div>
+    </div>
+  );
 }
-Análise de Código Estática (SonarQube)Para garantir a qualidade e segurança do código, o SonarQube será integrado ao pipeline. Ele realizará análises estáticas (SAST), identificando bugs, code smells e vulnerabilidades no código-fonte.Integração no Pipeline:Um novo estágio será adicionado para executar a análise do SonarQube após a etapa de scan de vulnerabilidades. O pipeline pode ser configurado para falhar se as "Quality Gates" do SonarQube não forem atendidas.Passos para Configuração:Subir SonarQube Localmente (via Docker Compose):Crie o arquivo sonar-compose.yaml na raiz do seu repositório:# sonar-compose.yaml
-version: "3.8"
+
+const sectionStyle = {
+  background: 'rgba(255, 255, 255, 0.8)',
+  padding: '20px',
+  borderRadius: '8px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  textAlign: 'center',
+  flex: '1 1 calc(33% - 40px)'
+};
+
+export default App;
+```
+**Conteúdo `frontend/package.json`:**
+```json
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
+```
+**Conteúdo `frontend/public/index.html`:**
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FastAPI React App</title>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
+</html>
+```
+**Conteúdo `frontend/src/index.js`:**
+```javascript
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+```
+**Conteúdo `frontend/Dockerfile`:**
+```dockerfile
+# frontend/Dockerfile
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package.json ./
+COPY package-lock.json ./
+RUN npm install
+COPY . .
+RUN chmod +x ./node_modules/.bin/* # Adicionando permissão de execução
+RUN npm run build
+
+FROM nginx:alpine
+COPY --from=builder /app/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+**Conteúdo `docker-compose.yaml` (na raiz):**
+```yaml
 services:
-  sonarqube:
-    image: sonarqube:lts-community
+  fastapi-app:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "9000:9000"
-    environment:
-      - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
-      - SONARQUBE_JDBC_USERNAME=sonar
-      - SONARQUBE_JDBC_PASSWORD=sonar
+      - "8000:8000"
     volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_extensions:/opt/sonarqube/extensions
-      - sonarqube_logs:/opt/sonarqube/logs
+      - ./backend:/app
+    restart: always
+
+  react-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    volumes:
+      - ./frontend:/app
     depends_on:
-      - db
-    restart: always
-
-  db:
-    image: postgres:15-alpine
+      - fastapi-app
     environment:
-      - POSTGRES_DB=sonar
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
-    volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      REACT_APP_API_BASE_URL: http://fastapi-app:8000
     restart: always
-
-volumes:
-  sonarqube_data:
-  sonarqube_extensions:
-  sonarqube_logs:
-  postgresql_data:
-Suba os serviços: docker-compose -f sonar-compose.yaml up -dAcesse http://localhost:9000 (login padrão admin/admin).Configurar SonarQube para Análise de Python/JS (Plugins):No SonarQube (interface web), vá em Administration > Marketplace.Procure por plugins de análise de código para Python e JavaScript/TypeScript e instale-os (se não vierem por padrão).Gerar Token de Autenticação SonarQube:No SonarQube, vá em My Account > Security.Gere um novo token (ex: jenkins-token) e COPIE-O.Configurar Jenkins para SonarQube:Instale o plugin "SonarQube Scanner" em Gerenciar Jenkins > Gerenciar Plugins.Vá para Gerenciar Jenkins > Configurar Sistema.Na seção "SonarQube servers", clique em "Add new SonarQube".Name: SonarQubeLocalServer URL: http://localhost:9000Authentication token: Crie uma nova credencial "Secret text" com ID sonarqube-token e cole o token do SonarQube. Selecione esta credencial.Adicionar Estágio no Jenkinsfile:Adicione o estágio SonarQube Analysis ao seu Jenkinsfile.// Jenkinsfile (Trecho relevante)
-stage('SonarQube Analysis') {
-    steps {
-        script {
-            withSonarQubeEnv(credentialsId: 'sonarqube-token', installationName: 'SonarQubeLocal') {
-                // Para o Backend (Python):
-                sh "sonar-scanner -Dsonar.projectKey=fastapi-app-devops-backend -Dsonar.sources=./backend -Dsonar.python.version=3.9"
-                // Para o Frontend (JavaScript/React):
-                // sh "sonar-scanner -Dsonar.projectKey=react-frontend-devops -Dsonar.sources=./frontend -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info"
-            }
-        }
-    }
-}
-Verificar Análise: Após o build do Jenkins, acesse http://localhost:9000 e procure pelo seu projeto (fastapi-app-devops-backend) para ver o relatório.Helm ChartO Helm é o gerenciador de pacotes para Kubernetes, que simplifica a definição, instalação e atualização de aplicações Kubernetes complexas. Este desafio envolve a criação de um Helm Chart para a sua aplicação e a sua implantação via Jenkins.Integração no Pipeline:O estágio de deploy no Jenkinsfile será adaptado para usar o Helm, substituindo a aplicação direta dos manifests kubectl apply.Passos para Configuração:Instalar Helm no WSL (Agente Jenkins):sudo apt update
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-Verificar instalação: helm versionCriar a Estrutura do Helm Chart:Na raiz do seu repositório, crie a pasta charts/.Dentro dela, crie o chart: helm create charts/my-app-chartAjustar Chart.yaml:Edite charts/my-app-chart/Chart.yaml com metadados do seu projeto.Ajustar values.yaml:Edite charts/my-app-chart/values.yaml para definir as variáveis configuráveis do seu projeto (nomes de imagem, tags, réplicas, portas).# charts/my-app-chart/values.yaml
-backend:
-  image:
-    repository: leandro282/projeto-kubernetes-pb-desafio-jenkins-backend
-    tag: latest # Será sobrescrito pelo Jenkins
-  replicaCount: 2
-  service:
-    port: 80
-    targetPort: 8000
-    nodePort: 30001
-
-frontend:
-  image:
-    repository: leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend
-    tag: latest # Será sobrescrito pelo Jenkins
-  replicaCount: 1
-  service:
-    port: 80
-    targetPort: 80
-    nodePort: 30000
-Mover e Adaptar Manifestos para templates/:Mova seus arquivos k8s/backend-deployment.yaml e k8s/frontend-deployment.yaml (e seus respectivos Services) para charts/my-app-chart/templates/.Adapte-os para usar as variáveis do values.yaml (ex: image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}").Remova a pasta k8s/ original.Exemplo de backend-deployment.yaml dentro de templates/:# charts/my-app-chart/templates/backend-deployment.yaml
+```
+**Conteúdo `k8s/backend-deployment.yaml`:**
+```yaml
+# k8s/backend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: fastapi-backend-deployment
+  name: fastapi-app-deployment
   labels:
-    app: fastapi-backend
+    app: fastapi-app
 spec:
-  replicas: {{ .Values.backend.replicaCount }}
+  replicas: 2
   selector:
     matchLabels:
-      app: fastapi-backend
+      app: fastapi-app
   template:
     metadata:
       labels:
-        app: fastapi-backend
+        app: fastapi-app
     spec:
       containers:
       - name: fastapi-container
-        image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+        image: leandro282/projeto-kubernetes-pb-desafio-jenkins:{{tag}}
         ports:
-        - containerPort: {{ .Values.backend.service.targetPort }}
-Exemplo de backend-service.yaml dentro de templates/:# charts/my-app-chart/templates/backend-service.yaml
+        - containerPort: 8000
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: fastapi-backend-service
+  name: fastapi-service
 spec:
   selector:
-    app: fastapi-backend
+    app: fastapi-app
   ports:
-  - port: {{ .Values.backend.service.port }}
-    targetPort: {{ .Values.backend.service.targetPort }}
-    nodePort: {{ .Values.backend.service.nodePort }}
-  type: {{ .Values.backend.service.type }}
-Exemplo de frontend-deployment.yaml dentro de templates/:# charts/my-app-chart/templates/frontend-deployment.yaml
+  - port: 80
+    targetPort: 8000
+    nodePort: 30001
+  type: NodePort
+```
+**Conteúdo `k8s/frontend-deployment.yaml`:**
+```yaml
+# k8s/frontend-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -166,7 +564,7 @@ metadata:
   labels:
     app: react-frontend
 spec:
-  replicas: {{ .Values.frontend.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: react-frontend
@@ -177,40 +575,82 @@ spec:
     spec:
       containers:
       - name: react-container
-        image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+        image: leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:{{tag}}
         ports:
-        - containerPort: {{ .Values.frontend.service.targetPort }}
-Exemplo de frontend-service.yaml dentro de templates/:# charts/my-app-chart/templates/frontend-service.yaml
-apiVersion: v1
-kind: Service
-metadata:
-  name: react-frontend-service
-spec:
-  selector:
-    app: react-frontend
-  ports:
-  - protocol: TCP
-    port: {{ .Values.frontend.service.port }}
-    targetPort: {{ .Values.frontend.service.targetPort }}
-    nodePort: {{ .Values.frontend.service.nodePort }}
-  type: {{ .Values.frontend.service.type }}
-Adicionar Estágio de Deploy com Helm no Jenkinsfile:Substitua o estágio Deploy to Kubernetes existente pelo Deploy with Helm.// Jenkinsfile (Trecho relevante do estágio 'Deploy to Kubernetes')
-stage('Deploy with Helm') {
-    environment {
-        RELEASE_TAG = "${env.BUILD_ID}"
-        HELM_RELEASE_NAME = "fastapi-react-app" # Nome do seu release Helm
-        HELM_CHART_PATH = "./charts/my-app-chart" # Caminho para o seu chart Helm
+        - containerPort: 80
+```
+**Conteúdo `Jenkinsfile`:**
+```groovy
+// Jenkinsfile
+pipeline {
+    agent any
+
+    triggers {
+        githubPush()
     }
-    steps {
-        withKubeConfig([credentialsId: 'kubeconfig']) {
-            sh "helm upgrade --install ${HELM_RELEASE_NAME} ${HELM_CHART_PATH} " +
-               "--namespace default " +
-               "--set backend.image.tag=${RELEASE_TAG} " +
-               "--set frontend.image.tag=${RELEASE_TAG} " +
-               "--set backend.replicaCount=2 " + # Exemplo de sobrescrita de replicas
-               "--atomic " + # Garante que a atualização seja atômica (rollback em falha)
-               "--wait"      # Espera o deploy completar antes de avançar
+
+    stages {
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}", "./backend")
+                }
+            }
+        }
+
+        stage('Build Frontend Docker Image') {
+            steps {
+                script {
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}", "./frontend")
+                }
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}").push('latest')
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${env.BUILD_ID}").push("${env.BUILD_ID}")
+                    }
+                }
+            }
+        }
+
+        stage('Push Frontend Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}").push('latest')
+                        docker.image("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}").push("${env.BUILD_ID}")
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            environment {
+                BACKEND_TAG = "${env.BUILD_ID}"
+                FRONTEND_TAG = "${env.BUILD_ID}"
+            }
+            steps {
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${BACKEND_TAG}|g' ./k8s/backend-deployment.yaml"
+                    sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${FRONTEND_TAG}|g' ./k8s/frontend-deployment.yaml"
+
+                    sh 'kubectl apply -f k8s/backend-deployment.yaml'
+                    sh 'kubectl rollout status deployment/fastapi-backend-deployment'
+
+                    sh 'kubectl apply -f k8s/frontend-deployment.yaml'
+                    sh 'kubectl rollout status deployment/react-frontend-deployment'
+                }
+            }
+        }
+
+        stage('Chuck Norris') {
+            steps {
+                step([$class: 'CordellWalkerRecorder'])
+            }
         }
     }
 }
-Testar: Faça um git push e verifique a implantação Helm com helm list e kubectl get all -l app.kubernetes.io/instance=fastapi-react-app.
