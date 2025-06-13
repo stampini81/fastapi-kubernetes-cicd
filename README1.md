@@ -290,9 +290,11 @@ git commit -m "Fase 1: Preparacao do projeto - Codigo base, repo GitHub, e endpo
 git push origin main # Ou master
 ```
 Criar conta no Docker Hub.
+
 ```
 Acesse https://hub.docker.com/ e crie uma conta gratuita, se ainda não tiver. Anote seu nome de usuário.
 ```
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 Verificar acesso ao cluster Kubernetes local:
 
 Certifique-se de que o Docker Desktop está instalado e rodando no Windows e que o Kubernetes está habilitado nas configurações.
@@ -377,10 +379,6 @@ Faça o push: docker push seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-je
 
 Verificação: Acesse seu Docker Hub no navegador.
 
-
-![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
-
-
 ```
 docker-docs.uclv.cu
 ```
@@ -396,6 +394,7 @@ git commit -m "Fase 2: Conteinerizacao - Adicionar Dockerfile, docker-compose.ya
 git push origin main
 ```
 Imagem: 
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 
 Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml versionados no GitHub.
 
@@ -559,12 +558,10 @@ Faça o git add ., git commit, git push do Jenkinsfile para o GitHub.
 
 No Jenkins, clique em "Build Now".
 
-Verifique o console para garantir que "Build Docker Image" e "Push Docker Image" são concluídos com SUCESSO.
-
-![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png) 
-![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)  
+Verifique o console para garantir que "Build Docker Image" e "Push Docker Image" são concluídos com SUCESSO.  
 
 Entregáveis: Pipeline funcional no Jenkins até o push da imagem.
+![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png) 
 
 ## Fase 5: Jenkins - Deploy no Kubernetes
 Objetivo: Configurar o Jenkins para acessar o kubectl e o cluster local, e adicionar uma etapa de deploy no pipeline.
@@ -620,7 +617,7 @@ Faça git add ., git commit, git push origin main.
 Monitore o Jenkins para ver o build disparar automaticamente e verificar se todos os estágios são concluídos com SUCESSO.
 
 Entregáveis: Pipeline completo com deploy automatizado.
-
+![Pipeline no Jenkins](img-projeto/Pipeline_chuck_norris.png)
 ## 5. Estrutura do Projeto
 A estrutura do seu repositório deve ser a seguinte:
 ```
@@ -676,6 +673,8 @@ http://localhost:30001/color
 
 http://localhost:30001/cat
 ```
+![FAST_API](img-projeto/FastAPI4.png)
+
 ## 7. Desafios Extras
 Para aprimorar ainda mais o projeto, considere os seguintes desafios:
 
