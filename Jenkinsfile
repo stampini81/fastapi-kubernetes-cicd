@@ -1,8 +1,9 @@
+
 pipeline {
     agent any
 
     triggers {
-        githubPush() // Gatilho para disparar o pipeline por eventos de push do GitHub
+        githubPush()
     }
 
     stages {
@@ -17,7 +18,8 @@ pipeline {
         stage('Build Frontend Docker Image') {
             steps {
                 script {
-                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend_old:${env.BUILD_ID}", "./frontend")
+                    // Mudar './frontend' para './frontend_old'
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}", "./frontend_old")
                 }
             }
         }
@@ -51,19 +53,21 @@ pipeline {
             }
             steps {
                 withKubeConfig([credentialsId: 'kubeconfig']) {
-                    // Substitui a tag da imagem do Backend no YAML do Backend
                     sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-backend:${BACKEND_TAG}|g' ./k8s/backend-deployment.yaml"
-                    // Substitui a tag da imagem do Frontend no YAML do Frontend
                     sh "sed -i 's|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:{{tag}}|leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${FRONTEND_TAG}|g' ./k8s/frontend-deployment.yaml"
 
-                    // Aplica os YAMLs do Backend
                     sh 'kubectl apply -f k8s/backend-deployment.yaml'
                     sh 'kubectl rollout status deployment/fastapi-backend-deployment'
 
-                    // Aplica os YAMLs do Frontend
                     sh 'kubectl apply -f k8s/frontend-deployment.yaml'
                     sh 'kubectl rollout status deployment/react-frontend-deployment'
                 }
+            }
+        }
+
+        stage('Chuck Norris') {
+            steps {
+                step([$class: 'CordellWalkerRecorder'])
             }
         }
     }
