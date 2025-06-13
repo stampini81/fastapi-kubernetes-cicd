@@ -565,6 +565,8 @@ Verifique o console para garantir que "Build Docker Image" e "Push Docker Image"
 
 Entregáveis: Pipeline funcional no Jenkins até o push da imagem.
 ![Pipeline no Jenkins](img-projeto/Pipeline_Jenkinsfile.png) 
+![Pipeline no Jenkins](img-projeto/push_automatizado1.png)
+![Pipeline no Jenkins](img-projeto/push_automatizado1.png)
 
 ## Fase 5: Jenkins - Deploy no Kubernetes
 Objetivo: Configurar o Jenkins para acessar o kubectl e o cluster local, e adicionar uma etapa de deploy no pipeline.
