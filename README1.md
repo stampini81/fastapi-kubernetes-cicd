@@ -294,9 +294,9 @@ Criar conta no Docker Hub.
 ```
 Acesse https://hub.docker.com/ e crie uma conta gratuita, se ainda não tiver. Anote seu nome de usuário.
 ```
-![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
-Verificar acesso ao cluster Kubernetes local:
 
+Verificar acesso ao cluster Kubernetes local:
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 Certifique-se de que o Docker Desktop está instalado e rodando no Windows e que o Kubernetes está habilitado nas configurações.
 
 No terminal WSL, verifique o status do cluster:
@@ -379,8 +379,8 @@ Faça o push: docker push seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-je
 
 Verificação: Acesse seu Docker Hub no navegador.
 
-![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
 
+![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
 ```
 docker-docs.uclv.cu
 ```
@@ -400,9 +400,7 @@ Entregáveis: Imagem publicada no Docker Hub e Dockerfile e docker-compose.yaml 
 
 Imagem: 
 
-![Imagem Docker Hub](img-projeto/docker_hub_img.png) 
-![Verificação no Kubernetes](img-projeto/localhost_3001.png)
-
+![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
 # Fase 3: Arquivos de Deploy no Kubernetes
 Objetivo: Criar e aplicar manualmente os arquivos YAML para o Deployment e Service da aplicação FastAPI no Kubernetes local.
 
