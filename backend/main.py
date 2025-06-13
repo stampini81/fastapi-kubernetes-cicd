@@ -18,7 +18,7 @@ app.add_middleware(
 
 @app.get("/color")
 async def get_random_color():
-    colors = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF3", "#FFDD33", "#33FFDD"] #oi
+    colors = ["#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF3", "#FFDD33", "#33FFDD"] #oiii
     return {"cor": random.choice(colors)}
 
 @app.get("/cat")
