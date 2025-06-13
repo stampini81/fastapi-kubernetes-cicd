@@ -11,7 +11,7 @@
     Após a construção e o push das imagens Docker, um novo estágio é executado para escanear a imagem do backend (e opcionalmente o frontend). O pipeline será configurado para **falhar** se vulnerabilidades de severidade **ALTA** ou **CRÍTICA** forem detectadas, impedindo o deploy de imagens potencialmente inseguras para o cluster Kubernetes.
 
     **Comando no Jenkinsfile:**
-    ```groovy
+    ```
     stage('Scan Vulnerabilities (Trivy)') {
         steps {
             script {
@@ -51,7 +51,7 @@
     ```
     (Se vulnerabilidades forem encontradas, o formato da tabela mostrará os detalhes e o build falhará se `HIGH` ou `CRITICAL` estiverem presentes, devido ao `--exit-code 1`).
 
-    ---
+    
 
     * [Notificações (Slack/Discord)](#notificações-slackdiscord)
     * [Análise de Código Estática (SonarQube)](#análise-de-código-estática-sast-sonarqube)
