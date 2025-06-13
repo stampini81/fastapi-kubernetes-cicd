@@ -156,7 +156,7 @@ Verifique o status:
 sudo systemctl status jenkins
 ```
 Acesse o Jenkins no seu navegador: http://localhost:8080
-![Jenkins](img-projeto/build.png)
+![Jenkins](../img-projeto/build.png)
 
 Chave de Segurança Inicial:
 Para obter a senha inicial de administrador do Jenkins:
