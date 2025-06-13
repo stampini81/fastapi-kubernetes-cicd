@@ -17,7 +17,7 @@ pipeline {
         stage('Build Frontend Docker Image') {
             steps {
                 script {
-                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}", "./frontend")
+                    docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend_old:${env.BUILD_ID}", "./frontend")
                 }
             }
         }

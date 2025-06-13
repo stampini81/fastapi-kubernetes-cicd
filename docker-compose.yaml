@@ -12,7 +12,7 @@ services:
 
   react-frontend:
     build:
-      context: ./frontend
+      context: ./frontend_old
       dockerfile: Dockerfile
       args: # <--- CRÍTICO: Passar variáveis para o build
         # Para desenvolvimento local, o navegador está no HOST.
@@ -21,7 +21,7 @@ services:
     ports:
       - "3000:80" # Host:Container
     volumes:
-      - ./frontend:/app
+      - ./frontend_old:/app
     depends_on:
       - fastapi-app
     restart: always
