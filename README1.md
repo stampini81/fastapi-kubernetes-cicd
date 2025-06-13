@@ -379,10 +379,12 @@ Faça o push: docker push seu_usuario_dockerhub/projeto-kubernetes-pb-desafio-je
 
 Verificação: Acesse seu Docker Hub no navegador.
 
+![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
+
 ```
 docker-docs.uclv.cu
 ```
-![Pipeline no Jenkins](img-projeto/Docker_Hub_imagem_criada_e_pipeline.png) 
+
 
 
 Versionar o Dockerfile e docker-compose.yaml no GitHub:
