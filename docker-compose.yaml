@@ -14,7 +14,7 @@ services:
     build:
       context: ./frontend_old
       dockerfile: Dockerfile
-      args: # <--- CRÍTICO: Passar variáveis para o build
+      args: # <--- CRÍTICO: Passar variáveis para o build..
         # Para desenvolvimento local, o navegador está no HOST.
         # Ele precisa acessar o backend via o localhost do HOST.
         REACT_APP_API_BASE_URL: http://localhost:8000 # <-- AQUI A URL CORRETA PARA TESTE LOCAL
