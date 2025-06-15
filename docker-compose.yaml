@@ -1,22 +1,23 @@
+
 services:
   fastapi-app:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "8000:8000" 
     volumes:
       - ./backend:/app
     restart: always
 
   react-frontend:
     build:
-      context: ./frontend_old
+      context: ./frontend_old 
       dockerfile: Dockerfile
-      args:
-        REACT_APP_API_BASE_URL: http://localhost:8000
+      args:         
+        REACT_APP_API_BASE_URL: http://localhost:8000 
     ports:
-      - "3000:80"
+      - "3000:80" 
     volumes:
       - ./frontend_old:/app
     depends_on:

@@ -1,15 +1,12 @@
-// frontend/src/App.js
+
 import React, { useState, useEffect } from 'react';
 
-// A API_BASE_URL será injetada como uma variável de ambiente durante o build do Docker.
-// Ela será 'http://localhost:8000' para desenvolvimento local (via Docker Compose)
-// e 'http://fastapi-backend-service:8000' para deploy no Kubernetes.
+
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function App() {
-  // Adicione estes logs para depuração
-  console.log('API_BASE_URL sendo usada (App.js):', API_BASE_URL);
-  console.log('Ambiente (process.env.NODE_ENV):', process.env.NODE_ENV); // Para ver o valor que o React vê
+  console.log('API_BASE_URL sendo usada (App.js):', API_BASE_URL); 
+  console.log('Ambiente (process.env.NODE_ENV):', process.env.NODE_ENV); 
 
   const [color, setColor] = useState('white');
   const [catImage, setCatImage] = useState('');

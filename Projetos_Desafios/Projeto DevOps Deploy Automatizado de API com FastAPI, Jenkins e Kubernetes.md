@@ -661,6 +661,8 @@ Confirme que o Deployment está READY, os Pods estão Running e Ready.
 
 Acessar a aplicação:
 Abra seu navegador web e acesse:
+![Verificação no Kubernetes](../img-projeto/localhost_3001.png)
+
 ```
 http://localhost:30001
 

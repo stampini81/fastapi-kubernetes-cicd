@@ -1,4 +1,4 @@
-# k8s/backend-deployment.yaml
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -29,7 +29,7 @@ spec:
   selector:
     app: fastapi-backend
   ports:
-  - port: 80 # Porta do Service (interna ao cluster)
-    targetPort: 8000 # Porta do contêiner (FastAPI)
-    nodePort: 30001 # Porta externa no nó para o BACKEND
+  - port: 80 
+    targetPort: 8000 
+    nodePort: 30001 
   type: NodePort
