@@ -10,7 +10,7 @@ aqui deixei pistas para descubrir como subir a aplicação
 <html lang="pt-BR">
 
 <body>
-  <h1>Desafio DevOps com FastAPI e React 🚀</h1>
+  <h1>Desafio DevOps com FastAPI e React. 🚀</h1>
 
   <p>Este projeto tem como objetivo integrar <strong>um backend em FastAPI</strong> com <strong>um frontend em React</strong>, além de configurar CI/CD usando <strong>Jenkins</strong> e <strong>Kubernetes</strong> (via Rancher ou Minikube). É uma oportunidade de aprender na prática como criar, containerizar, automatizar e orquestrar aplicações modernas!</p>
 
