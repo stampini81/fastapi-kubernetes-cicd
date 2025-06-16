@@ -15,12 +15,10 @@
             stage('Build Frontend Docker Image') {
                 steps {
                     script {
-                        // CORREÇÃO AQUI: Sintaxe correta para docker.build com buildArgs
-                        docker.build("leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID}",
-                                     // O segundo argumento é o caminho do contexto para o Dockerfile
-                                     "./frontend_old",
-                                     // O terceiro argumento é um mapa de opções nomeadas, incluindo buildArgs
-                                     [buildArgs: [REACT_APP_API_BASE_URL: 'http://fastapi-backend-service:8000']]) // <<--- CORREÇÃO AQUI
+                        // CORREÇÃO AQUI: Usar 'sh' para executar o comando docker build completo
+                        // Passa REACT_APP_API_BASE_URL como um argumento de build para o Dockerfile.
+                        // O contexto do build é './frontend_old' (onde o Dockerfile e os fontes estão).
+                        sh "docker build -t leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID} --build-arg REACT_APP_API_BASE_URL=http://fastapi-backend-service:8000 ./frontend_old"
                     }
                 }
             }
