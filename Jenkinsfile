@@ -1,7 +1,10 @@
     // Jenkinsfile (Trecho relevante)
     pipeline {
         agent any
-        // ... (triggers) ...
+
+        triggers {
+            githubPush()
+        }
 
         stages {
             stage('Build Backend Docker Image') {
@@ -15,9 +18,7 @@
             stage('Build Frontend Docker Image') {
                 steps {
                     script {
-                        // CORREÇÃO AQUI: Usar 'sh' para executar o comando docker build completo
-                        // Passa REACT_APP_API_BASE_URL como um argumento de build para o Dockerfile.
-                        // O contexto do build é './frontend_old' (onde o Dockerfile e os fontes estão).
+                        // CORREÇÃO AQUI: A linha inteira deve ser uma STRING para o comando 'sh'
                         sh "docker build -t leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID} --build-arg REACT_APP_API_BASE_URL=http://fastapi-backend-service:8000 ./frontend_old"
                     }
                 }
