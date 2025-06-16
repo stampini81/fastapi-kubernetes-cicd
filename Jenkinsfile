@@ -1,4 +1,4 @@
-    // Jenkinsfile (Trecho relevante)
+    
     pipeline {
         agent any
 
@@ -18,7 +18,7 @@
             stage('Build Frontend Docker Image') {
                 steps {
                     script {
-                        // CORREÇÃO AQUI: A linha inteira deve ser uma STRING para o comando 'sh'
+                        
                         sh "docker build -t leandro282/projeto-kubernetes-pb-desafio-jenkins-frontend:${env.BUILD_ID} --build-arg REACT_APP_API_BASE_URL=http://fastapi-backend-service:8000 ./frontend_old"
                     }
                 }
