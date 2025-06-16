@@ -2,7 +2,11 @@
 import React, { useState, useEffect } from 'react';
 
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = process.env.NODE_ENV === 'production'
+  ? 'http://fastapi-backend-service.default.svc.cluster.local:8000' // <<--- CORREÇÃO AQUI: NOME COMPLETO
+  : 'http://localhost:8000'; // Para desenvolvimento local (via docker-compose no host)
+
 
 function App() {
   console.log('API_BASE_URL sendo usada (App.js):', API_BASE_URL); 
